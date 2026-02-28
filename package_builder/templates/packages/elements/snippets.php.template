@@ -1,0 +1,9 @@
+<?php
+
+return [
+    '{{short_name}}Connector' => [
+        'file' => 'connector.php',
+        'description' => '',
+        'properties' => [],
+    ],
+];

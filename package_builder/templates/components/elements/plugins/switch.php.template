@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var \MODX\Revolution\modX $modx
+ * @var array $scriptProperties
+ */
+$basePath = $modx->getOption('base_path', null, $_SERVER['DOCUMENT_ROOT'] . '/');
+require_once $basePath . 'core/components/{{Package_name}}/src/vendor/autoload.php';
+$className = '{{Package_name}}\\Plugins\\' . $modx->event->name;
+if (class_exists($className)) {
+    $pluginHandler = new $className($modx, $scriptProperties);
+    $pluginHandler->run();
+}

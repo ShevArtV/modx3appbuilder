@@ -1,0 +1,47 @@
+<?php
+
+return [
+    'name' => '{{Package_name}}',
+    'name_lower' => '{{package_name}}',
+    'name_short' => '{{short_name}}',
+    'version' => '1.0.0',
+    'release' => 'alpha',
+    
+    'paths' => [
+        'core' => 'core/components/{{package_name}}/',
+        'assets' => 'assets/components/{{package_name}}/',
+    ],
+    
+    'schema' => [
+        'file' => 'model/schema/{{package_name}}.mysql.schema.xml',
+        'auto_generate_classes' => true,
+        'update_tables' => true,
+    ],
+    
+    'elements' => [
+        'category' => '{{Package_name}}',
+        'chunks' => 'elements/chunks.php',
+        'snippets' => 'elements/snippets.php',
+        'plugins' => 'elements/plugins.php',
+        'templates' => 'elements/templates.php',
+        'tvs' => 'elements/tvs.php',
+        'settings' => 'elements/settings.php',
+        'menus' => 'elements/menus.php',
+    ],
+    
+    'static' => [
+        'chunks' => true,
+        'snippets' => true,
+        'templates' => true,
+    ],
+    
+    'build' => [
+        'download' => false,
+        'install' => false,
+        'update' => [
+            'chunks' => true,
+            'snippets' => true,
+            'settings' => false,
+        ],
+    ],
+];

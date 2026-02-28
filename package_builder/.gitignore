@@ -1,0 +1,10 @@
+/vendor/
+/composer.lock
+/composer.phar
+/user.config.json
+*.bak
+.DS_Store
+
+# Пользовательские пакеты (создаются через cli.php create)
+/packages/*
+!/packages/testpkg/

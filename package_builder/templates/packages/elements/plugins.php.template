@@ -1,0 +1,11 @@
+<?php
+
+return [
+    '{{Package_name}}' => [
+        'file' => 'switch.php',
+        'description' => '',
+        'events' => [
+            'OnLoadWebDocument',
+        ],
+    ],
+];

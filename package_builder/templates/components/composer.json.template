@@ -1,0 +1,23 @@
+{
+  "name": "{{gitlogin}}/{{Package_name}}",
+  "description": "Component for MODX 3",
+  "type": "modx-extra",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "{{author_name}}",
+      "email": "{{author_email}}"
+    }
+  ],
+  "homepage": "https://github.com/{{gitlogin}}/{{Package_name}}",
+  "require": {
+    "php": ">={{php_version}}"
+  },
+  "autoload": {
+    "psr-4": {
+      "{{Package_name}}\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

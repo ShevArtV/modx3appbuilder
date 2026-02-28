@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @var \MODX\Revolution\modX $modx
+ * @var \SendIt $SendIt
+ * @var array $scriptProperties
+ */
+
+$basePath = $modx->getOption('base_path', null, $_SERVER['DOCUMENT_ROOT'] . '/');
+require_once $basePath . 'core/components/{{Package_name}}/src/vendor/autoload.php';
+
+$output = [
+    'message' => '',
+    'success' => false,
+    'data' => []
+];
+$className = $scriptProperties['className'];
+if(!$className || !class_exists($className)){
+    return $SendIt->error($output['message'], $output['data']);
+}
+
+$Object = new $className($modx);
+$method = $scriptProperties['method'];
+if(!$method || !method_exists($Object, $method)){
+    return $SendIt->error($output['message'], $output['data']);
+}
+
+$output = $Object->$method($scriptProperties);
+
+$output['data']['handler'] = $_REQUEST['handler'];
+if ($output['success']) {
+    return $SendIt->success($output['message'], $output['data']);
+}
+return $SendIt->error($output['message'], $output['data']);

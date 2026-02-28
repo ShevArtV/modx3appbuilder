@@ -1,0 +1,16 @@
+{
+  "name": "modx/component-builder",
+  "description": "Package builder for MODX Revolution 3",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "ComponentBuilder\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

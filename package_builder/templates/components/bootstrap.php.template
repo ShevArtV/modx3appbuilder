@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @var \MODX\Revolution\modX $modx
+ * @var array $namespace
+ */
+
+// Load composer autoload
+require_once $namespace['path'] . 'vendor/autoload.php';
+
+// Load the classes if model directory exists
+if (is_dir($namespace['path'] . 'src/Model')) {
+    $modx->addPackage('{{Package_name}}\Model', $namespace['path'] . 'src/', null, '{{Package_name}}\\');
+}
+
+$modx->services->add('{{Package_name}}', function ($c) use ($modx) {
+    return new {{Package_name}}\{{Package_name}}($modx);
+});

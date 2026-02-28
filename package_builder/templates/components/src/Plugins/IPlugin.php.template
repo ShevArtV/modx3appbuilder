@@ -1,0 +1,12 @@
+<?php
+
+namespace {{Package_name}}\Plugins;
+
+use MODX\Revolution\modX;
+
+interface IPlugin
+{    
+    public function __construct(modX $modx, array $scriptProperties);
+
+    public function run(array $orderData): void;
+}
