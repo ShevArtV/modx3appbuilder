@@ -16,6 +16,8 @@ class ComponentBuilder
     private modPackageBuilder $builder;
     private modCategory $category;
     private array $categoryAttributes = [];
+    /** @var string[] */
+    private array $tempDirs = [];
 
     /**
      * @param array $config
@@ -85,14 +87,20 @@ class ComponentBuilder
 
         $vehicle = $this->builder->createVehicle($this->category, $this->categoryAttributes);
 
+        $filter = $this->createIgnoreFilter($packageConfig);
+
+        $filteredCore = $this->prepareBuildSource($filter, $packageConfig['abs_core'], $packageConfig['name_lower'] . '_core');
+
         $vehicle->resolve('file', [
-            'source' => $packageConfig['abs_core'],
+            'source' => $filteredCore,
             'target' => "return MODX_CORE_PATH . 'components/';",
         ]);
 
         if (is_dir($packageConfig['abs_assets'])) {
+            $filteredAssets = $this->prepareBuildSource($filter, $packageConfig['abs_assets'], $packageConfig['name_lower'] . '_assets');
+
             $vehicle->resolve('file', [
-                'source' => $packageConfig['abs_assets'],
+                'source' => $filteredAssets,
                 'target' => "return MODX_ASSETS_PATH . 'components/';",
             ]);
         }
@@ -118,6 +126,8 @@ class ComponentBuilder
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Packing up transport package zip...');
         $this->builder->pack();
 
+        $this->cleanupTempDirs();
+
         $signature = $this->builder->getSignature();
         $this->modx->log(modX::LOG_LEVEL_INFO, "Package built: {$signature}.transport.zip");
 
@@ -130,6 +140,55 @@ class ComponentBuilder
         }
 
         return true;
+    }
+
+    /**
+     * @param array $packageConfig
+     * @return IgnoreFilter
+     */
+    private function createIgnoreFilter(array $packageConfig): IgnoreFilter
+    {
+        $packagesPath = dirname(__DIR__) . '/packages/' . $packageConfig['name_lower'] . '/';
+        $ignoreFile = $packagesPath . '.packignore';
+
+        $filter = new IgnoreFilter($ignoreFile);
+
+        if (is_file($ignoreFile)) {
+            $this->modx->log(modX::LOG_LEVEL_INFO, 'Loaded .packignore: ' . $ignoreFile);
+        }
+
+        return $filter;
+    }
+
+    /**
+     * @param IgnoreFilter $filter
+     * @param string $sourcePath
+     * @param string $prefix
+     * @return string
+     */
+    private function prepareBuildSource(IgnoreFilter $filter, string $sourcePath, string $prefix): string
+    {
+        $tempDir = sys_get_temp_dir() . '/modx_build_' . $prefix . '_' . uniqid();
+        $dirName = basename(rtrim($sourcePath, '/\\'));
+        $destination = $tempDir . '/' . $dirName;
+
+        $copied = $filter->copyFiltered($sourcePath, $destination);
+        $this->tempDirs[] = $tempDir;
+
+        $this->modx->log(modX::LOG_LEVEL_INFO, "Filtered {$dirName}/: {$copied} files copied");
+
+        return $destination . '/';
+    }
+
+    /**
+     * @return void
+     */
+    private function cleanupTempDirs(): void
+    {
+        foreach ($this->tempDirs as $dir) {
+            IgnoreFilter::removeDirectory($dir);
+        }
+        $this->tempDirs = [];
     }
 
     /**

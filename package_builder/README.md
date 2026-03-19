@@ -608,6 +608,91 @@ php cli.php schema mypackage --validate
 ],
 ```
 
+## Фильтрация файлов (.packignore)
+
+При сборке пакета в transport.zip копируются все файлы из `core/components/` и `assets/components/`. Файл `.packignore` позволяет исключить ненужные файлы — аналогично `.gitignore`.
+
+### Расположение
+
+```
+packages/mypackage/
+├── config.php
+├── .packignore          ← файл фильтрации
+└── elements/
+```
+
+### Синтаксис
+
+Полностью совместим с `.gitignore`:
+
+| Паттерн | Описание |
+|---------|----------|
+| `*.log` | Все файлы с расширением .log |
+| `vendor/` | Директория vendor (и всё внутри) |
+| `*.min.js` | Все минифицированные JS файлы |
+| `src/scss/` | Только директория src/scss |
+| `**/*.bak` | Файлы .bak на любом уровне вложенности |
+| `!dist/app.js` | Исключение из игнора (оставить в пакете) |
+| `#` | Комментарий |
+| `temp?.txt` | `?` — один любой символ |
+| `log[0-9].txt` | Классы символов |
+
+**Правила:**
+- `dir/` с `/` на конце — матчит только директории
+- `path/to/file` со слешем внутри — привязан к корню компонента
+- `*.bak` без слеша — матчит на любом уровне вложенности
+- `!pattern` — отменяет игнорирование (negation)
+- `**` — любой путь включая вложенные директории
+
+### Паттерны по умолчанию
+
+Всегда исключаются (даже без `.packignore`):
+
+```
+.git/
+.gitignore
+.gitattributes
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+```
+
+### Пример .packignore
+
+```gitignore
+# Логи
+logs/
+*.log
+
+# Зависимости
+composer.lock
+vendor/
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# Тесты
+tests/
+phpunit.xml
+
+# Исходники фронтенда (в пакет идёт только dist/)
+src/js/
+src/scss/
+webpack.config.js
+package.json
+package-lock.json
+
+# Временные файлы
+*.bak
+*.tmp
+*.orig
+```
+
 ## Шифрование пакетов
 
 ComponentBuilder поддерживает шифрование транспортных пакетов через API modstore.pro (AES-256-CBC).
@@ -652,6 +737,7 @@ build_web.php?package=mypackage&encrypt
 | `SchemaManager` | Генерация классов и таблиц из XML схемы |
 | `LexiconExtractor` | Извлечение лексиконов из кода |
 | `SettingsExtractor` | Извлечение настроек из кода |
+| `IgnoreFilter` | Фильтрация файлов по `.packignore` (gitignore-синтаксис) |
 | `ElementType` | Enum типов элементов |
 
 ### Поддерживаемые элементы
@@ -666,6 +752,7 @@ build_web.php?package=mypackage&encrypt
 - **Автоматическая генерация классов моделей** из XML схем
 - **Управление элементами** - отдельная команда для синхронизации с БД
 - **Извлечение лексиконов и настроек** из кода
+- **Фильтрация файлов** через `.packignore` (gitignore-синтаксис) для core и assets
 - **Шифрование пакетов** через modstore.pro API (AES-256-CBC)
 - **Web интерфейс** для сборки на серверах без CLI PHP 8
 - **Интерактивный режим** создания пакетов с сохранением параметров
