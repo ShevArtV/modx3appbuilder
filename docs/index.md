@@ -21,46 +21,29 @@
 
 ### Сборка и дистрибуция
 - **Сборка transport.zip** с поддержкой всех типов элементов MODX
+- **Автоматические проверки** качества кода перед сборкой
 - **Фильтрация файлов** при сборке через `.packignore` — технические файлы не попадут в пакет
 - **Шифрование** платных пакетов через modstore.pro API
 
-## Варианты работы
+## Системные требования
 
-Package Builder поддерживает три варианта использования:
+### Минимальные (headless-режим)
 
-=== "Headless (локально, без MODX)"
+- PHP 8.1+
+- Composer
+- Расширения PHP: `pdo_sqlite`, `zip`, `mbstring`
 
-    Для разработки без необходимости поднимать сервер и устанавливать MODX. Package Builder скачает ядро MODX и настроит SQLite — этого достаточно для создания структуры пакета, сборки transport.zip, генерации классов из схемы и извлечения данных из кода.
+Достаточно для `setup`, `create`, `build`, `schema`, `extract-*`.
 
-    ```bash
-    mxbuilder setup          # скачать ядро MODX
-    mxbuilder create mypackage
-    mxbuilder build mypackage
-    ```
+### Для полного функционала
 
-    Недоступны: `elements` (добавление в админку), `export` (извлечение из БД).
+- PHP 8.1+
+- Composer
+- MODX Revolution 3 (установленный)
+- MySQL/MariaDB
+- Расширения PHP: `pdo_mysql`, `zip`, `mbstring`
 
-=== "Локально с MODX"
-
-    Полный функционал. MODX установлен локально, все команды доступны — включая добавление элементов в админку, извлечение из БД и установку пакета на сайт.
-
-    ```bash
-    mxbuilder create mypackage
-    mxbuilder elements mypackage    # добавить элементы в MODX
-    mxbuilder build mypackage --install
-    ```
-
-=== "Удалённый сервер"
-
-    Код пишется локально, сборка и установка — на удалённом сервере с MODX. Package Builder устанавливается на сервере, файлы деплоятся любым удобным способом (git, rsync, FTP).
-
-    ```bash
-    # На сервере:
-    composer global require shevartv/modx-builder
-    mxbuilder build mypackage --install
-
-    # Или локально собрать, на сервер отправить transport.zip
-    ```
+Необходимо для команд `elements` и `export`.
 
 ## Быстрый старт
 
@@ -106,6 +89,44 @@ composer require shevartv/modx-builder --dev
 ```
 
 В этом случае команда вызывается как `vendor/bin/mxbuilder`. Далее во всех примерах используется `mxbuilder` (глобальная установка).
+
+#### Варианты работы
+
+Package Builder поддерживает три варианта использования:
+
+=== "Headless (локально, без MODX)"
+
+    Для разработки без необходимости поднимать сервер и устанавливать MODX. Package Builder скачает ядро MODX и настроит SQLite — этого достаточно для создания структуры пакета, сборки transport.zip, генерации классов из схемы и извлечения данных из кода.
+
+    ```bash
+    mxbuilder setup          # скачать ядро MODX
+    mxbuilder create mypackage
+    mxbuilder build mypackage
+    ```
+
+    Недоступны: `elements` (добавление в админку), `export` (извлечение из БД).
+
+=== "Локально с MODX"
+
+    Полный функционал. MODX установлен локально, все команды доступны — включая добавление элементов в админку, извлечение из БД и установку пакета на сайт.
+
+    ```bash
+    mxbuilder create mypackage
+    mxbuilder elements mypackage    # добавить элементы в MODX
+    mxbuilder build mypackage --install
+    ```
+
+=== "Удалённый сервер"
+
+    Код пишется локально, сборка и установка — на удалённом сервере с MODX. Package Builder устанавливается на сервере, файлы деплоятся любым удобным способом (git, rsync, FTP).
+
+    ```bash
+    # На сервере:
+    composer global require shevartv/modx-builder
+    mxbuilder build mypackage --install
+
+    # Или локально собрать, на сервер отправить transport.zip
+    ```
 
 ### 2. Настройка окружения (если нет MODX)
 
@@ -255,6 +276,8 @@ mxbuilder build mypackage
 
 Команда собирает transport.zip — стандартный формат пакетов MODX, который можно установить через менеджер пакетов или загрузить на modstore.pro.
 
+Перед сборкой автоматически запускаются проверки качества кода (PHPStan, CS Fixer, ESLint). Если есть ошибки — сборка прерывается. Используйте `--no-check` для пропуска.
+
 Флаг `--install` автоматически установит пакет на текущий сайт после сборки. Это удобно при разработке — собрали, установили, проверили в админке:
 
 ```bash
@@ -277,23 +300,3 @@ mxbuilder build mypackage --install
 | Events | Кастомные события |
 | Policies | Политики доступа |
 | Policy Templates | Шаблоны политик |
-
-## Системные требования
-
-### Минимальные (headless-режим)
-
-- PHP 8.1+
-- Composer
-- Расширение PHP: `pdo_sqlite`, `zip`, `mbstring`
-
-Достаточно для `setup`, `create`, `build`, `schema`, `extract-*`.
-
-### Для полного функционала
-
-- PHP 8.1+
-- Composer
-- MODX Revolution 3 (установленный)
-- MySQL/MariaDB
-- Расширение PHP: `pdo_mysql`, `zip`, `mbstring`
-
-Необходимо для команд `elements` и `export`.
