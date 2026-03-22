@@ -134,10 +134,15 @@ class SetupManager
         $this->recursiveCopy($sourceCore, $targetCore);
 
         $rootDir = $dirs[0];
-        foreach (['composer.json', 'composer.lock'] as $file) {
-            if (file_exists($rootDir . '/' . $file)) {
-                copy($rootDir . '/' . $file, $targetCore . '/' . $file);
+        if (file_exists($rootDir . '/composer.lock')) {
+            copy($rootDir . '/composer.lock', $targetCore . '/composer.lock');
+        }
+        if (file_exists($rootDir . '/composer.json')) {
+            $composerJson = json_decode(file_get_contents($rootDir . '/composer.json'), true);
+            if (isset($composerJson['config']['vendor-dir'])) {
+                $composerJson['config']['vendor-dir'] = 'vendor';
             }
+            file_put_contents($targetCore . '/composer.json', json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         }
 
         $this->removeDir($tmpDir);
