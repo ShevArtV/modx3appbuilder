@@ -71,6 +71,10 @@ class ExportManager
         }
 
         foreach ($this->modx->getIterator(modChunk::class, ['category' => $this->categoryId]) as $chunk) {
+            if ($chunk->get('static')) {
+                continue;
+            }
+
             $name = $chunk->get('name');
             $fileName = $this->toFileName($name) . '.tpl';
 
@@ -103,6 +107,10 @@ class ExportManager
         }
 
         foreach ($this->modx->getIterator(modSnippet::class, ['category' => $this->categoryId]) as $snippet) {
+            if ($snippet->get('static')) {
+                continue;
+            }
+
             $name = $snippet->get('name');
             $fileName = $this->toFileName($name) . '.php';
 
@@ -142,6 +150,10 @@ class ExportManager
         }
 
         foreach ($this->modx->getIterator(modPlugin::class, ['category' => $this->categoryId]) as $plugin) {
+            if ($plugin->get('static')) {
+                continue;
+            }
+
             $name = $plugin->get('name');
             $fileName = $this->toFileName($name) . '.php';
 
@@ -187,6 +199,10 @@ class ExportManager
         }
 
         foreach ($this->modx->getIterator(modTemplate::class, ['category' => $this->categoryId]) as $template) {
+            if ($template->get('static')) {
+                continue;
+            }
+
             $name = $template->get('templatename');
             $fileName = $this->toFileName($name) . '.tpl';
 
