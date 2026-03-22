@@ -164,6 +164,10 @@ class StandaloneBuilder
                 $resolverName = pathinfo($resolverFile, PATHINFO_FILENAME);
                 $resolverTarget = $vehicleDir . '.' . $resolverName . '.resolver';
 
+                $resolverDir = dirname($this->buildDir . $resolverTarget);
+                if (!is_dir($resolverDir)) {
+                    mkdir($resolverDir, 0755, true);
+                }
                 copy($resolverFile, $this->buildDir . $resolverTarget);
 
                 $resolvers[] = [
