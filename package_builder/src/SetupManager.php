@@ -142,6 +142,13 @@ class SetupManager
             if (isset($composerJson['config']['vendor-dir'])) {
                 $composerJson['config']['vendor-dir'] = 'vendor';
             }
+            if (isset($composerJson['autoload']['psr-4'])) {
+                $fixed = [];
+                foreach ($composerJson['autoload']['psr-4'] as $ns => $path) {
+                    $fixed[$ns] = preg_replace('#^core/#', '', $path);
+                }
+                $composerJson['autoload']['psr-4'] = $fixed;
+            }
             file_put_contents($targetCore . '/composer.json', json_encode($composerJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         }
 
