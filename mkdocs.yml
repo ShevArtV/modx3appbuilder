@@ -48,6 +48,7 @@ nav:
     - elements: commands/elements.md
     - extract-lexicons: commands/extract-lexicons.md
     - extract-settings: commands/extract-settings.md
+    - export: commands/export.md
     - templates: commands/templates.md
   - Конфигурация: configuration.md
   - Инструменты: tools.md

@@ -240,8 +240,22 @@ mxbuilder build mypackage --install
 | Policies | Политики доступа |
 | Policy Templates | Шаблоны политик |
 
-## Требования
+## Системные требования
+
+### Минимальные (headless-режим)
 
 - PHP 8.1+
-- MODX Revolution 3
 - Composer
+- Расширение PHP: `pdo_sqlite`, `zip`, `mbstring`
+
+Достаточно для `setup`, `create`, `build`, `schema`, `extract-*`.
+
+### Для полного функционала
+
+- PHP 8.1+
+- Composer
+- MODX Revolution 3 (установленный)
+- MySQL/MariaDB
+- Расширение PHP: `pdo_mysql`, `zip`, `mbstring`
+
+Необходимо для команд `elements` и `export`.

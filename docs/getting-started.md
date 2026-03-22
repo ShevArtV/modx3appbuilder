@@ -1,5 +1,12 @@
 # Установка
 
+## Системные требования
+
+- **PHP** 8.1+
+- **Composer**
+- **Расширения PHP**: `pdo_sqlite`, `zip`, `mbstring`
+- **MODX Revolution 3** + **MySQL/MariaDB** — только для команд `elements` и `export` (работа с БД)
+
 ## Через Composer
 
 ```bash

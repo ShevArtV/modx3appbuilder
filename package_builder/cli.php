@@ -29,6 +29,7 @@ use ComponentBuilder\SchemaManager;
 use ComponentBuilder\LexiconExtractor;
 use ComponentBuilder\SettingsExtractor;
 use ComponentBuilder\ElementManager;
+use ComponentBuilder\ExportManager;
 use ComponentBuilder\SetupManager;
 
 $cli = new CLI($argv);
@@ -267,6 +268,51 @@ try {
             $extractor = new SettingsExtractor();
             $extractor->extractFromDirectory($directory, $settingsPrefix . '_');
             $extractor->generateSettingsFile($packageName, $settingsPrefix . '_', $outputPath);
+            break;
+
+        case 'export':
+            $packageName = $cli->getPackageName();
+            if (!$packageName) {
+                $cli->showError('Package name is required for export command');
+            }
+
+            $packageConfig = $configManager->loadPackageConfig($packageName);
+            if (!$packageConfig) {
+                $cli->showError("Package config not found: {$packageName}");
+            }
+
+            $builder = new ComponentBuilder($packageConfig);
+            $modx = $builder->getModx();
+
+            $root = dirname(MODX_CORE_PATH) . '/';
+            $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
+            $elementsPath = dirname(__DIR__) . '/package_builder/packages/' . $packageName . '/elements';
+
+            $exportManager = new ExportManager($modx, $packageConfig);
+
+            if (is_dir($elementsPath) && !$cli->hasOption('force')) {
+                echo "Elements directory already exists: {$elementsPath}\n";
+                if (!$cli->promptYesNo('Overwrite existing files?', false)) {
+                    echo "Aborted.\n";
+                    break;
+                }
+            }
+
+            $results = $exportManager->export($elementsPath, $corePath);
+
+            $total = 0;
+            foreach ($results as $type => $count) {
+                if ($count > 0) {
+                    echo "  {$type}: {$count}\n";
+                    $total += $count;
+                }
+            }
+
+            if ($total > 0) {
+                echo "SUCCESS: Exported {$total} elements for {$packageName}\n";
+            } else {
+                echo "No elements found for package {$packageName}\n";
+            }
             break;
 
         case 'config':
