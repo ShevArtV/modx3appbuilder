@@ -74,6 +74,7 @@ try {
                 'install' => $cli->hasOption('install'),
                 'download' => $cli->hasOption('download'),
                 'encrypt' => $cli->hasOption('encrypt'),
+                'standalone' => $cli->hasOption('standalone'),
             ];
 
             $builder = new ComponentBuilder($packageConfig);

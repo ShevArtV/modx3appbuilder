@@ -42,8 +42,116 @@ class ComponentBuilder
      * @param array $buildOptions
      * @return bool
      */
+    public function isHeadless(): bool
+    {
+        return $this->headless;
+    }
+
+    public function buildStandalone(string $packageName, array $buildOptions = []): bool
+    {
+        $packageConfig = $this->resolveConfig($packageName);
+
+        if (!$packageConfig) {
+            echo "ERROR: Package config not found: {$packageName}\n";
+            return false;
+        }
+
+        echo "Building package (standalone): {$packageName}\n";
+
+        $standalone = new StandaloneBuilder(MODX_CORE_PATH . 'packages');
+        $standalone->createPackage(
+            $packageConfig['name_lower'],
+            $packageConfig['version'],
+            $packageConfig['release']
+        );
+
+        $standalone->addNamespace(
+            $packageConfig['name_lower'],
+            '{core_path}components/' . $packageConfig['name_lower'] . '/'
+        );
+
+        $elements = $this->loadElementsForStandalone($packageConfig);
+        $filter = $this->createIgnoreFilter($packageConfig);
+
+        $standalone->addCategory(
+            $packageConfig['elements']['category'] ?? $packageConfig['name'],
+            $elements,
+            $packageConfig,
+            $filter,
+            $packageConfig['abs_core'],
+            is_dir($packageConfig['abs_assets']) ? $packageConfig['abs_assets'] : ''
+        );
+
+        if (!empty($elements['settings'])) {
+            foreach ($elements['settings'] as $key => $data) {
+                $standalone->addSetting(
+                    $key,
+                    array_merge(['namespace' => $packageConfig['name_lower']], $data),
+                    $packageConfig['name_lower'],
+                    $packageConfig['build']['update']['settings'] ?? false
+                );
+            }
+            echo "  Settings: " . count($elements['settings']) . "\n";
+        }
+
+        if (!empty($elements['menus'])) {
+            foreach ($elements['menus'] as $text => $data) {
+                $standalone->addMenu(
+                    $text,
+                    $data,
+                    $packageConfig['name_lower'],
+                    $packageConfig['build']['update']['menus'] ?? true
+                );
+            }
+            echo "  Menus: " . count($elements['menus']) . "\n";
+        }
+
+        $standalone->setPackageAttributes([
+            'changelog' => $this->readDocFile($packageConfig['abs_core'] . 'docs/changelog.txt'),
+            'license' => $this->readDocFile($packageConfig['abs_core'] . 'docs/license.txt'),
+            'readme' => $this->readDocFile($packageConfig['abs_core'] . 'docs/readme.txt'),
+            'requires' => [
+                'php' => '>=' . ($packageConfig['php_version'] ?? '8.1'),
+                'modx' => '>=3.0.0',
+            ],
+        ]);
+
+        $result = $standalone->pack();
+
+        $this->cleanupTempDirs();
+
+        return $result;
+    }
+
+    private function loadElementsForStandalone(array $packageConfig): array
+    {
+        $elements = [];
+        $basePath = getcwd() . '/package_builder/packages/' . $packageConfig['name_lower'] . '/';
+
+        $types = ['chunks', 'snippets', 'plugins', 'templates', 'tvs', 'settings', 'menus'];
+
+        foreach ($types as $type) {
+            if (empty($packageConfig['elements'][$type])) {
+                continue;
+            }
+            $filePath = $basePath . $packageConfig['elements'][$type];
+            if (file_exists($filePath)) {
+                $data = include $filePath;
+                if (is_array($data)) {
+                    $elements[$type] = $data;
+                }
+            }
+        }
+
+        return $elements;
+    }
+
     public function build(string $packageName, array $buildOptions = []): bool
     {
+        if ($this->headless || !empty($buildOptions['standalone'])) {
+            return $this->buildStandalone($packageName, $buildOptions);
+        }
+
         $packageConfig = $this->resolveConfig($packageName);
 
         if (!$packageConfig) {
@@ -53,9 +161,7 @@ class ComponentBuilder
 
         $this->modx->log(modX::LOG_LEVEL_INFO, "Building package: {$packageName}");
 
-        $this->builder = $this->headless
-            ? new HeadlessPackageBuilder($this->modx)
-            : new modPackageBuilder($this->modx);
+        $this->builder = new modPackageBuilder($this->modx);
         $this->builder->createPackage(
             $packageConfig['name_lower'],
             $packageConfig['version'],
