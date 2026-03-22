@@ -18,6 +18,7 @@ class ComponentBuilder
     private array $categoryAttributes = [];
     /** @var string[] */
     private array $tempDirs = [];
+    private bool $headless = false;
 
     /**
      * @param array $config
@@ -52,7 +53,9 @@ class ComponentBuilder
 
         $this->modx->log(modX::LOG_LEVEL_INFO, "Building package: {$packageName}");
 
-        $this->builder = new modPackageBuilder($this->modx);
+        $this->builder = $this->headless
+            ? new HeadlessPackageBuilder($this->modx)
+            : new modPackageBuilder($this->modx);
         $this->builder->createPackage(
             $packageConfig['name_lower'],
             $packageConfig['version'],
@@ -239,8 +242,14 @@ class ComponentBuilder
             }
         }
 
+        global $database_dsn;
+        $this->headless = !empty($database_dsn) && str_starts_with($database_dsn, 'sqlite:');
+
         $this->modx = new modX();
-        $this->modx->initialize('mgr');
+
+        if (!$this->headless) {
+            $this->modx->initialize('mgr');
+        }
 
         $this->modx->setLogLevel(modX::LOG_LEVEL_INFO);
         $this->modx->setLogTarget(php_sapi_name() === 'cli' ? 'ECHO' : 'HTML');
