@@ -131,6 +131,34 @@ npm run lint          # проверить
 npm run lint:fix      # автоисправить
 ```
 
+## Свои конфиги инструментов
+
+По умолчанию при `create` используются встроенные конфиги. Если вы хотите, чтобы все проекты использовали одинаковые настройки инструментов — создайте папку с вашими конфигами:
+
+```
+~/my-tool-configs/
+├── phpstan.neon
+├── .php-cs-fixer.dist.php
+└── eslint.config.js
+```
+
+Укажите путь к папке в глобальном конфиге:
+
+```bash
+mxbuilder config
+# → Path to custom tool configs: ~/my-tool-configs
+```
+
+Или в `mxbuilder.json` (локальный конфиг проекта):
+
+```json
+{
+    "toolsConfigPath": "/home/user/my-tool-configs"
+}
+```
+
+При `mxbuilder create` файлы из этой папки заменят встроенные шаблоны. Не обязательно класть все три файла — если в папке есть только `phpstan.neon`, заменён будет только он, остальные останутся встроенными.
+
 ## Сборка пакета
 
 Все файлы инструментов (`phpstan.neon`, `.php-cs-fixer.dist.php`, `eslint.config.js`, `package.json`, `node_modules/`) автоматически исключаются из transport-пакета через [.packignore](packignore.md).

@@ -149,6 +149,7 @@ return [
 'tools' => [
     'phpCsFixer' => false,  // PHP CS Fixer (PSR-12)
     'eslint' => false,      // ESLint для JS
+    'toolsConfigPath' => '', // путь к своим конфигам инструментов
 ],
 ```
 
