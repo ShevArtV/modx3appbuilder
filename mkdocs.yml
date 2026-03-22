@@ -47,6 +47,7 @@ nav:
     - create: commands/create.md
     - build: commands/build.md
     - schema: commands/schema.md
+    - schema-extract: commands/schema-extract.md
     - elements: commands/elements.md
     - extract-lexicons: commands/extract-lexicons.md
     - extract-settings: commands/extract-settings.md
