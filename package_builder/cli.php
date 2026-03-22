@@ -99,6 +99,7 @@ try {
                     'phpCsFixer' => $localConfig['phpCsFixer'] ?? false,
                     'eslint' => $localConfig['eslint'] ?? false,
                     'template' => $localConfig['template'] ?? '',
+                    'toolsConfigPath' => $localConfig['toolsConfigPath'] ?? '',
                     'author' => $localConfig['author'] ?? 'Your Name',
                     'email' => $localConfig['email'] ?? 'your-email@example.com',
                     'phpVersion' => $localConfig['phpVersion'] ?? '8.1',
@@ -120,6 +121,7 @@ try {
                     'phpCsFixer' => $cli->hasOption('php-cs-fixer') || ($localConfig['phpCsFixer'] ?? false),
                     'eslint' => $cli->hasOption('eslint') || ($localConfig['eslint'] ?? false),
                     'template' => $cli->getOption('template', $localConfig['template'] ?? ''),
+                    'toolsConfigPath' => $cli->getOption('tools-config', $localConfig['toolsConfigPath'] ?? ''),
                     'author' => $cli->getOption('author', $localConfig['author'] ?? 'Your Name'),
                     'email' => $cli->getOption('email', $localConfig['email'] ?? 'your-email@example.com'),
                     'phpVersion' => $cli->getOption('php-version', $localConfig['phpVersion'] ?? '8.1'),
@@ -330,6 +332,7 @@ try {
             $globalConfig['generateElements'] = $cli->promptYesNo('Generate elements files by default?', $globalConfig['generateElements'] ?? true);
             $globalConfig['phpCsFixer'] = $cli->promptYesNo('Add PHP CS Fixer by default?', $globalConfig['phpCsFixer'] ?? false);
             $globalConfig['eslint'] = $cli->promptYesNo('Add ESLint by default?', $globalConfig['eslint'] ?? false);
+            $globalConfig['toolsConfigPath'] = $cli->prompt('Path to custom tool configs (phpstan.neon, .php-cs-fixer.dist.php, eslint.config.js)', $globalConfig['toolsConfigPath'] ?? '');
 
             $cli->saveUserConfig($globalConfig);
             echo "\nSUCCESS: Global config saved\n";
@@ -359,6 +362,7 @@ try {
             $localConfig['generateElements'] = $cli->promptYesNo('Generate elements files?', $globalConfig['generateElements'] ?? true);
             $localConfig['phpCsFixer'] = $cli->promptYesNo('Add PHP CS Fixer?', $globalConfig['phpCsFixer'] ?? false);
             $localConfig['eslint'] = $cli->promptYesNo('Add ESLint?', $globalConfig['eslint'] ?? false);
+            $localConfig['toolsConfigPath'] = $cli->prompt('Path to custom tool configs', $globalConfig['toolsConfigPath'] ?? '');
 
             $cli->saveLocalConfig($localConfig);
             echo "\nSUCCESS: mxbuilder.json created\n";

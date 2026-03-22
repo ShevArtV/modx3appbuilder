@@ -130,6 +130,35 @@ class ConfigManager
                 }
             }
         }
+
+        $this->applyToolsConfig($targetPath, $options);
+    }
+
+    private function applyToolsConfig(string $targetPath, array $options): void
+    {
+        $toolsPath = $options['toolsConfigPath'] ?? '';
+
+        if (empty($toolsPath) || !is_dir($toolsPath)) {
+            return;
+        }
+
+        $toolsPath = rtrim($toolsPath, '/');
+
+        $map = [
+            'phpstan.neon' => 'phpstan.neon',
+            '.php-cs-fixer.dist.php' => '.php-cs-fixer.dist.php',
+            'eslint.config.js' => 'eslint.config.js',
+            'package.json' => 'package.json',
+        ];
+
+        foreach ($map as $source => $target) {
+            $sourcePath = $toolsPath . '/' . $source;
+            $targetFile = $targetPath . '/' . $target;
+
+            if (file_exists($sourcePath) && file_exists($targetFile)) {
+                copy($sourcePath, $targetFile);
+            }
+        }
     }
     
     private function createPackageConfig(string $packageName, array $options = []): void
