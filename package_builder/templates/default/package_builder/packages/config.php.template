@@ -50,4 +50,10 @@ return [
             'settings' => false,
         ],
     ],
+
+    'encrypt' => [
+        'enable' => false,
+        'login' => '',
+        'api_key' => '',
+    ],
 ];

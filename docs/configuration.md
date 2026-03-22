@@ -73,6 +73,12 @@ return [
             'settings' => false,
         ],
     ],
+
+    'encrypt' => [
+        'enable' => false,
+        'login' => '',
+        'password' => '',
+    ],
 ];
 ```
 
@@ -177,3 +183,20 @@ return [
 
 !!! warning "update → settings"
     Рекомендуется оставить `settings: false`, чтобы при обновлении пакета не перезатирать настройки, которые пользователь уже изменил.
+
+### encrypt
+
+Шифрование пакета через modstore.pro API:
+
+```php
+'encrypt' => [
+    'enable' => false,       // включить шифрование
+    'login' => '',           // логин modstore.pro
+    'api_key' => '',         // API-ключ modstore.pro
+],
+```
+
+Подробнее: [Шифрование](encryption.md)
+
+!!! warning "Безопасность"
+    Не коммитьте `config.php` с логином и API-ключом в публичные репозитории.
