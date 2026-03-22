@@ -24,6 +24,44 @@
 - **Фильтрация файлов** при сборке через `.packignore` — технические файлы не попадут в пакет
 - **Шифрование** платных пакетов через modstore.pro API
 
+## Варианты работы
+
+Package Builder поддерживает три варианта использования:
+
+=== "Headless (локально, без MODX)"
+
+    Для разработки без необходимости поднимать сервер и устанавливать MODX. Package Builder скачает ядро MODX и настроит SQLite — этого достаточно для создания структуры пакета, сборки transport.zip, генерации классов из схемы и извлечения данных из кода.
+
+    ```bash
+    mxbuilder setup          # скачать ядро MODX
+    mxbuilder create mypackage
+    mxbuilder build mypackage
+    ```
+
+    Недоступны: `elements` (добавление в админку), `export` (извлечение из БД).
+
+=== "Локально с MODX"
+
+    Полный функционал. MODX установлен локально, все команды доступны — включая добавление элементов в админку, извлечение из БД и установку пакета на сайт.
+
+    ```bash
+    mxbuilder create mypackage
+    mxbuilder elements mypackage    # добавить элементы в MODX
+    mxbuilder build mypackage --install
+    ```
+
+=== "Удалённый сервер"
+
+    Код пишется локально, сборка и установка — на удалённом сервере с MODX. Package Builder устанавливается на сервере, файлы деплоятся любым удобным способом (git, rsync, FTP).
+
+    ```bash
+    # На сервере:
+    composer global require shevartv/modx-builder
+    mxbuilder build mypackage --install
+
+    # Или локально собрать, на сервер отправить transport.zip
+    ```
+
 ## Быстрый старт
 
 ### 1. Установка
