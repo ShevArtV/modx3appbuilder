@@ -58,7 +58,7 @@ class StandaloneBuilder
         $fileIndex = 0;
 
         $filteredCore = $this->prepareBuildSource($filter, $corePath, $name . '_core');
-        $targetDir = $this->buildDir . $vehicleDir . '/' . $fileIndex . '/';
+        $targetDir = $this->buildDir . $vehicleDir . '/' . $fileIndex . '/' . $name . '/';
         $this->recursiveCopy($filteredCore, $targetDir);
         $this->removeDir($filteredCore);
 
@@ -74,7 +74,7 @@ class StandaloneBuilder
 
         if (!empty($realAssetsPath) && is_dir($realAssetsPath)) {
             $filteredAssets = $this->prepareBuildSource($filter, $realAssetsPath, $name . '_assets');
-            $targetDir = $this->buildDir . $vehicleDir . '/' . $fileIndex . '/';
+            $targetDir = $this->buildDir . $vehicleDir . '/' . $fileIndex . '/' . $name . '/';
             $this->recursiveCopy($filteredAssets, $targetDir);
             $this->removeDir($filteredAssets);
 
