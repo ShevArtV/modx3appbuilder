@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'tesConnector' => [
+    'testConnector' => [
         'file' => 'connector.php',
         'description' => '',
         'properties' => [],
