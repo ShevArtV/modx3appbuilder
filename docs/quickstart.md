@@ -59,6 +59,16 @@ package_builder/packages/my-package/
     └── plugins.php
 ```
 
+Это структура встроенного шаблона `default`. Вы можете создать свои шаблоны для разных типов пакетов — например, с дополнительными файлами, другой структурой assets или предустановленными элементами:
+
+```bash
+modxapp templates copy ecommerce       # скопировать default в package_builder/templates/ecommerce/
+# Отредактировать шаблон под свои нужды
+modxapp create my-shop --template=ecommerce
+```
+
+Подробнее: [Управление шаблонами](commands/templates.md)
+
 ## 5. Описание элементов
 
 Элементы описываются в PHP-файлах в `package_builder/packages/<name>/elements/`. Создайте нужные файлы:
