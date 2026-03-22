@@ -68,11 +68,11 @@ class CLI
     public function showHelp(): void
     {
         echo "Package Builder for MODX Revolution 3\n\n";
-        echo "Usage: mxbuilder <command> [package_name] [options]\n\n";
+        echo "Usage: modxapp <command> [package_name] [options]\n\n";
         echo "Commands:\n";
         echo "  setup                   Download MODX core and configure for local builds\n";
         echo "  config                  Configure global settings\n";
-        echo "  init                    Initialize project (create mxbuilder.json)\n";
+        echo "  init                    Initialize project (create modxapp.json)\n";
         echo "  create <name>           Create new package from template\n";
         echo "  build <name>            Build transport package\n";
         echo "  schema <name>           Generate classes from XML schema\n";
@@ -190,7 +190,7 @@ class CLI
 
     public function getLocalConfigPath(): string
     {
-        return getcwd() . '/mxbuilder.json';
+        return getcwd() . '/modxapp.json';
     }
 
     public function localConfigExists(): bool

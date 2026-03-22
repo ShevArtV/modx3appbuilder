@@ -5,7 +5,7 @@
 ## Использование
 
 ```bash
-mxbuilder create <name> [options]
+modxapp create <name> [options]
 ```
 
 ## Опции
@@ -28,16 +28,16 @@ mxbuilder create <name> [options]
 
 ```bash
 # Интерактивный режим
-mxbuilder create mypackage --interactive
+modxapp create mypackage --interactive
 
 # С флагами
-mxbuilder create mypackage --elements --author="Ivan" --email=ivan@test.com
+modxapp create mypackage --elements --author="Ivan" --email=ivan@test.com
 
 # Со всеми инструментами
-mxbuilder create mypackage --elements --php-cs-fixer --eslint
+modxapp create mypackage --elements --php-cs-fixer --eslint
 
 # С кастомными шаблонами
-mxbuilder create mypackage --template=./my-templates
+modxapp create mypackage --template=./my-templates
 ```
 
 ## Что создаётся

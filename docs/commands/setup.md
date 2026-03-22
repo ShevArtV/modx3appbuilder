@@ -5,7 +5,7 @@
 ## Использование
 
 ```bash
-mxbuilder setup
+modxapp setup
 ```
 
 ## Что происходит
@@ -19,7 +19,7 @@ mxbuilder setup
 
 Package Builder работает в двух режимах:
 
-### Headless (после `mxbuilder setup`)
+### Headless (после `modxapp setup`)
 
 Локальная разработка без сервера и MySQL. Ядро MODX + SQLite.
 
@@ -57,13 +57,13 @@ Package Builder работает в двух режимах:
 mkdir my-project && cd my-project
 
 # Настроить окружение
-mxbuilder setup
+modxapp setup
 
 # Создать пакет
-mxbuilder create mypackage
+modxapp create mypackage
 
 # Собрать transport.zip
-mxbuilder build mypackage
+modxapp build mypackage
 ```
 
 ## Структура после setup
@@ -76,7 +76,7 @@ my-project/
 │   ├── cache/
 │   ├── packages/                  — сюда попадают собранные пакеты
 │   ├── src/Revolution/            — классы MODX
-│   └── mxbuilder.sqlite           — минимальная БД
+│   └── modxapp.sqlite           — минимальная БД
 ├── core/components/mypackage/     — исходники пакета (после create)
 └── package_builder/packages/      — конфиги сборки (после create)
 ```

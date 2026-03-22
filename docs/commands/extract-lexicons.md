@@ -5,13 +5,13 @@
 ## Использование
 
 ```bash
-mxbuilder extract-lexicons <name>
+modxapp extract-lexicons <name>
 ```
 
 ## Пример
 
 ```bash
-mxbuilder extract-lexicons mypackage
+modxapp extract-lexicons mypackage
 ```
 
 ## Что делает

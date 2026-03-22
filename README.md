@@ -21,10 +21,10 @@ composer global require shevartv/modx-builder
 ## Быстрый старт
 
 ```bash
-mxbuilder setup                    # скачать ядро MODX (если нет)
-mxbuilder config                   # настроить данные автора
-mxbuilder create mypackage         # создать пакет
-mxbuilder build mypackage          # собрать transport.zip
+modxapp setup                    # скачать ядро MODX (если нет)
+modxapp config                   # настроить данные автора
+modxapp create mypackage         # создать пакет
+modxapp build mypackage          # собрать transport.zip
 ```
 
 ## Документация

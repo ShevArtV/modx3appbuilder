@@ -145,11 +145,11 @@ npm run lint:fix      # автоисправить
 Укажите путь к папке в глобальном конфиге:
 
 ```bash
-mxbuilder config
+modxapp config
 # → Path to custom tool configs: ~/my-tool-configs
 ```
 
-Или в `mxbuilder.json` (локальный конфиг проекта):
+Или в `modxapp.json` (локальный конфиг проекта):
 
 ```json
 {
@@ -157,11 +157,11 @@ mxbuilder config
 }
 ```
 
-При `mxbuilder create` файлы из этой папки заменят встроенные шаблоны. Не обязательно класть все три файла — если в папке есть только `phpstan.neon`, заменён будет только он, остальные останутся встроенными.
+При `modxapp create` файлы из этой папки заменят встроенные шаблоны. Не обязательно класть все три файла — если в папке есть только `phpstan.neon`, заменён будет только он, остальные останутся встроенными.
 
 ## Автоматические проверки при сборке
 
-При `mxbuilder build` перед сборкой автоматически запускаются проверки:
+При `modxapp build` перед сборкой автоматически запускаются проверки:
 
 1. **PHPStan** — если установлен (всегда включён в `composer.json`)
 2. **PHP CS Fixer** — если включён в конфиге
@@ -171,10 +171,10 @@ mxbuilder config
 
 ```bash
 # Сборка с проверками (по умолчанию)
-mxbuilder build mypackage
+modxapp build mypackage
 
 # Пропустить проверки
-mxbuilder build mypackage --no-check
+modxapp build mypackage --no-check
 ```
 
 ### Режим PHP CS Fixer

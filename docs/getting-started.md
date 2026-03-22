@@ -11,7 +11,7 @@
 
 | Вариант | Описание | Установка |
 |---------|----------|-----------|
-| **Headless** | Локально без MODX и MySQL. Создание, сборка, генерация классов | `mxbuilder setup` скачает ядро MODX |
+| **Headless** | Локально без MODX и MySQL. Создание, сборка, генерация классов | `modxapp setup` скачает ядро MODX |
 | **Локальный MODX** | Полный функционал, все команды | MODX уже установлен |
 | **Удалённый сервер** | Код пишется локально, сборка на сервере с MODX | Установить Package Builder на сервере |
 
@@ -26,14 +26,14 @@ composer require shevartv/modx-builder --dev
 После установки CLI доступен как:
 
 ```bash
-vendor/bin/mxbuilder
+vendor/bin/modxapp
 ```
 
-Для глобальной установки (команда `mxbuilder` доступна из любой директории):
+Для глобальной установки (команда `modxapp` доступна из любой директории):
 
 ```bash
 composer global require shevartv/modx-builder
-mxbuilder
+modxapp
 ```
 
 ## Структура после установки
@@ -64,7 +64,7 @@ package_builder/packages/mypackage/   — конфигурация сборки
 ### Интерактивный режим
 
 ```bash
-mxbuilder create mypackage --interactive
+modxapp create mypackage --interactive
 ```
 
 Мастер задаст вопросы:
@@ -84,7 +84,7 @@ mxbuilder create mypackage --interactive
 ### Через флаги
 
 ```bash
-mxbuilder create mypackage \
+modxapp create mypackage \
     --elements \
     --author="Ivan Petrov" \
     --email=ivan@example.com \

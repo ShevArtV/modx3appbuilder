@@ -5,7 +5,7 @@
 ## Использование
 
 ```bash
-mxbuilder schema <name> [options]
+modxapp schema <name> [options]
 ```
 
 ## Опции
@@ -19,10 +19,10 @@ mxbuilder schema <name> [options]
 
 ```bash
 # Сгенерировать классы и обновить таблицы
-mxbuilder schema mypackage
+modxapp schema mypackage
 
 # Только валидация
-mxbuilder schema mypackage --validate
+modxapp schema mypackage --validate
 ```
 
 ## XML-схема
@@ -63,7 +63,7 @@ mxbuilder schema mypackage --validate
 ## Валидация
 
 ```bash
-mxbuilder schema mypackage --validate
+modxapp schema mypackage --validate
 ```
 
 Проверяет:

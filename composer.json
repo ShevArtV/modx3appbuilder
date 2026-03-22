@@ -17,7 +17,7 @@
         }
     },
     "bin": [
-        "package_builder/mxbuilder"
+        "package_builder/modxapp"
     ],
     "minimum-stability": "stable",
     "prefer-stable": true

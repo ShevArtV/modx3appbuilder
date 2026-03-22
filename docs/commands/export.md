@@ -5,7 +5,7 @@
 ## Использование
 
 ```bash
-mxbuilder export <name> [--force]
+modxapp export <name> [--force]
 ```
 
 ## Опции
@@ -17,7 +17,7 @@ mxbuilder export <name> [--force]
 ## Пример
 
 ```bash
-mxbuilder export mypackage
+modxapp export mypackage
 ```
 
 Результат:

@@ -5,18 +5,18 @@
 ## Использование
 
 ```bash
-mxbuilder templates path              # показать путь к оригинальным шаблонам
-mxbuilder templates copy <path>       # скопировать шаблоны в указанную папку
+modxapp templates path              # показать путь к оригинальным шаблонам
+modxapp templates copy <path>       # скопировать шаблоны в указанную папку
 ```
 
 ## Примеры
 
 ```bash
 # Узнать, где лежат оригинальные шаблоны
-mxbuilder templates path
+modxapp templates path
 
 # Скопировать для кастомизации
-mxbuilder templates copy ./my-templates
+modxapp templates copy ./my-templates
 ```
 
 ## Кастомные шаблоны
@@ -25,14 +25,14 @@ mxbuilder templates copy ./my-templates
 
 ```bash
 # 1. Скопировать оригинальные шаблоны
-mxbuilder templates copy ./my-templates
+modxapp templates copy ./my-templates
 
 # 2. Отредактировать под свои нужды
 #    ./my-templates/components/   — шаблоны компонента
 #    ./my-templates/packages/     — шаблоны конфигурации
 
 # 3. Создать пакет из своих шаблонов
-mxbuilder create mypackage --template=./my-templates
+modxapp create mypackage --template=./my-templates
 ```
 
 ### Использование при создании пакета
@@ -40,7 +40,7 @@ mxbuilder create mypackage --template=./my-templates
 Через флаг:
 
 ```bash
-mxbuilder create mypackage --template=./my-templates
+modxapp create mypackage --template=./my-templates
 ```
 
 В интерактивном режиме — будет задан вопрос:
@@ -93,7 +93,7 @@ my-templates/
 !!! tip "Разные шаблоны для разных пакетов"
     Можно создать несколько наборов шаблонов и указывать нужный при создании:
     ```bash
-    mxbuilder create shop --template=./templates/ecommerce
-    mxbuilder create blog --template=./templates/content
-    mxbuilder create api  --template=./templates/headless
+    modxapp create shop --template=./templates/ecommerce
+    modxapp create blog --template=./templates/content
+    modxapp create api  --template=./templates/headless
     ```

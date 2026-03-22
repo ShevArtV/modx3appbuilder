@@ -5,13 +5,13 @@
 ## Использование
 
 ```bash
-mxbuilder extract-settings <name>
+modxapp extract-settings <name>
 ```
 
 ## Пример
 
 ```bash
-mxbuilder extract-settings mypackage
+modxapp extract-settings mypackage
 ```
 
 ## Что делает

@@ -5,7 +5,7 @@
 ## Использование
 
 ```bash
-mxbuilder build <name> [options]
+modxapp build <name> [options]
 ```
 
 ## Опции
@@ -22,13 +22,13 @@ mxbuilder build <name> [options]
 
 ```bash
 # Собрать пакет
-mxbuilder build mypackage
+modxapp build mypackage
 
 # Собрать и установить
-mxbuilder build mypackage --install
+modxapp build mypackage --install
 
 # Собрать с шифрованием
-mxbuilder build mypackage --encrypt
+modxapp build mypackage --encrypt
 
 # Через web
 # http://site.ru/build_web.php?package=mypackage&install&download

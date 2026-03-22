@@ -90,7 +90,7 @@ try {
             if (!$cli->localConfigExists()) {
                 $globalConfig = $cli->loadUserConfig();
                 $cli->saveLocalConfig($globalConfig);
-                echo "Created mxbuilder.json from global config\n";
+                echo "Created modxapp.json from global config\n";
             }
 
             $localConfig = $cli->loadLocalConfig();
@@ -354,7 +354,7 @@ try {
 
         case 'init':
             if ($cli->localConfigExists()) {
-                echo "mxbuilder.json already exists in this directory.\n";
+                echo "modxapp.json already exists in this directory.\n";
                 if (!$cli->promptYesNo('Overwrite?', false)) {
                     echo "Aborted.\n";
                     break;
@@ -379,7 +379,7 @@ try {
             $localConfig['toolsConfigPath'] = $cli->prompt('Path to custom tool configs', $globalConfig['toolsConfigPath'] ?? '');
 
             $cli->saveLocalConfig($localConfig);
-            echo "\nSUCCESS: mxbuilder.json created\n";
+            echo "\nSUCCESS: modxapp.json created\n";
             break;
 
         case 'setup':
@@ -395,7 +395,7 @@ try {
 
             if ($setupManager->setup()) {
                 echo "\nSUCCESS: MODX core configured for local package building\n";
-                echo "You can now use 'mxbuilder build' without a full MODX installation.\n";
+                echo "You can now use 'modxapp build' without a full MODX installation.\n";
             } else {
                 $cli->showError('Setup failed');
             }
@@ -409,7 +409,7 @@ try {
             } elseif ($subCommand === 'copy') {
                 $destination = $cli->getArg(2);
                 if (!$destination) {
-                    $cli->showError('Destination path is required: mxbuilder templates copy <path>');
+                    $cli->showError('Destination path is required: modxapp templates copy <path>');
                 }
 
                 if ($configManager->copyTemplates($destination)) {
@@ -419,8 +419,8 @@ try {
                 }
             } else {
                 echo "Usage:\n";
-                echo "  mxbuilder templates path              Show default templates path\n";
-                echo "  mxbuilder templates copy <path>       Copy default templates to <path>\n";
+                echo "  modxapp templates path              Show default templates path\n";
+                echo "  modxapp templates copy <path>       Copy default templates to <path>\n";
             }
             break;
 

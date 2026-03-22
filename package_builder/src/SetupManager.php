@@ -57,7 +57,7 @@ class SetupManager
 
         $context = stream_context_create([
             'http' => [
-                'header' => "User-Agent: mxbuilder\r\n",
+                'header' => "User-Agent: modxapp\r\n",
                 'timeout' => 30,
             ],
         ]);
@@ -140,7 +140,7 @@ class SetupManager
             mkdir($configDir, 0755, true);
         }
 
-        $dbPath = $this->basePath . '/core/mxbuilder.sqlite';
+        $dbPath = $this->basePath . '/core/modxapp.sqlite';
         $corePath = $this->basePath . '/core/';
 
         $config = <<<PHP
@@ -153,8 +153,8 @@ global \$database_dsn, \$database_user, \$database_password, \$config_options, \
 \$table_prefix = 'modx_';
 \$config_options = [];
 \$driver_options = [];
-\$site_id = 'mxbuilder';
-\$uuid = 'mxbuilder-local';
+\$site_id = 'modxapp';
+\$uuid = 'modxapp-local';
 
 if (!defined('MODX_CORE_PATH')) define('MODX_CORE_PATH', '{$corePath}');
 if (!defined('MODX_PROCESSORS_PATH')) define('MODX_PROCESSORS_PATH', '{$corePath}src/Revolution/Processors/');
@@ -172,7 +172,7 @@ PHP;
 
     public function initDatabase(): void
     {
-        $dbPath = $this->basePath . '/core/mxbuilder.sqlite';
+        $dbPath = $this->basePath . '/core/modxapp.sqlite';
         $pdo = new \PDO('sqlite:' . $dbPath);
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 

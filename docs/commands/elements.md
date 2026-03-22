@@ -5,13 +5,13 @@
 ## Использование
 
 ```bash
-mxbuilder elements <name>
+modxapp elements <name>
 ```
 
 ## Пример
 
 ```bash
-mxbuilder elements mypackage
+modxapp elements mypackage
 ```
 
 ## Поддерживаемые типы
