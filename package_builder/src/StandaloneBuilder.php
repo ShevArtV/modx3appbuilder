@@ -118,21 +118,38 @@ class StandaloneBuilder
 
         $hash = md5(json_encode($categoryObject) . $this->signature);
 
+        $vehicleDir = 'MODX/Revolution/modCategory/' . $hash;
         $resolvers = [];
+        $fileIndex = 0;
 
         $filteredCore = $this->prepareBuildSource($filter, $corePath, $config['name_lower'] . '_core');
+        $targetDir = $this->buildDir . $vehicleDir . '/' . $fileIndex . '/';
+        $this->recursiveCopy($filteredCore, $targetDir);
+        $this->removeDir($filteredCore);
+
         $resolvers[] = [
             'type' => 'file',
-            'source' => $filteredCore,
-            'target' => "return MODX_CORE_PATH . 'components/';",
+            'body' => json_encode([
+                'source' => $this->signature . '/' . $vehicleDir . '/' . $fileIndex . '/',
+                'target' => "return MODX_CORE_PATH . 'components/';",
+                'name' => $config['name_lower'],
+            ]),
         ];
+        $fileIndex++;
 
         if (!empty($assetsPath) && is_dir($assetsPath)) {
             $filteredAssets = $this->prepareBuildSource($filter, $assetsPath, $config['name_lower'] . '_assets');
+            $targetDir = $this->buildDir . $vehicleDir . '/' . $fileIndex . '/';
+            $this->recursiveCopy($filteredAssets, $targetDir);
+            $this->removeDir($filteredAssets);
+
             $resolvers[] = [
                 'type' => 'file',
-                'source' => $filteredAssets,
-                'target' => "return MODX_ASSETS_PATH . 'components/';",
+                'body' => json_encode([
+                    'source' => $this->signature . '/' . $vehicleDir . '/' . $fileIndex . '/',
+                    'target' => "return MODX_ASSETS_PATH . 'components/';",
+                    'name' => $config['name_lower'],
+                ]),
             ];
         }
 
@@ -641,6 +658,40 @@ class StandaloneBuilder
                 $zip->addEmptyDir($relativePath);
             } else {
                 $zip->addFile($file->getPathname(), $relativePath);
+            }
+        }
+    }
+
+    private function recursiveCopy(string $source, string $destination): void
+    {
+        if (!is_dir($source)) {
+            return;
+        }
+
+        if (!is_dir($destination)) {
+            mkdir($destination, 0755, true);
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        $sourceLen = strlen($source) + 1;
+
+        foreach ($iterator as $file) {
+            $target = $destination . '/' . substr($file->getPathname(), $sourceLen);
+
+            if ($file->isDir()) {
+                if (!is_dir($target)) {
+                    mkdir($target, 0755, true);
+                }
+            } else {
+                $targetDir = dirname($target);
+                if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0755, true);
+                }
+                copy($file->getPathname(), $target);
             }
         }
     }
