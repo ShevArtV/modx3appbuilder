@@ -76,6 +76,7 @@ class CLI
         echo "  create <name>           Create new package from template\n";
         echo "  build <name>            Build transport package\n";
         echo "  schema <name>           Generate classes from XML schema\n";
+        echo "  schema-extract <name>   Extract XML schema from database tables\n";
         echo "  elements <name>         Add elements to MODX database\n";
         echo "  export <name>           Export elements from MODX database to files\n";
         echo "  extract-lexicons <name> Extract lexicon keys from code\n";

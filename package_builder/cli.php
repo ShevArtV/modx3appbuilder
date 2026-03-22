@@ -30,6 +30,7 @@ use ComponentBuilder\LexiconExtractor;
 use ComponentBuilder\SettingsExtractor;
 use ComponentBuilder\ElementManager;
 use ComponentBuilder\ExportManager;
+use ComponentBuilder\SchemaExtractor;
 use ComponentBuilder\SetupManager;
 use ComponentBuilder\ToolsChecker;
 
@@ -207,6 +208,37 @@ try {
             if ($packageConfig['schema']['update_tables'] ?? false) {
                 $schemaManager->updateDatabase($schemaFile, $packageConfig['name_lower']);
                 echo "Database updated for {$packageName}\n";
+            }
+            break;
+
+        case 'schema-extract':
+            $packageName = $cli->getPackageName();
+            if (!$packageName) {
+                $cli->showError('Package name is required for schema-extract command');
+            }
+
+            $packageConfig = $configManager->loadPackageConfig($packageName);
+            if (!$packageConfig) {
+                $cli->showError("Package config not found: {$packageName}");
+            }
+
+            $builder = new ComponentBuilder($packageConfig);
+            $modx = $builder->getModx();
+
+            $root = getcwd() . '/';
+            $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
+            $schemaFile = $corePath . ($packageConfig['schema']['file'] ?? 'schema/' . $packageName . '.mysql.schema.xml');
+
+            $extractor = new SchemaExtractor($modx);
+            $count = $extractor->extract($packageName, $schemaFile);
+
+            if ($count > 0) {
+                echo "Extracted {$count} tables to {$schemaFile}\n";
+
+                $schemaManager = new SchemaManager($modx, $packageConfig);
+                $outputDir = $corePath . 'src/';
+                $schemaManager->generateClasses($schemaFile, $outputDir);
+                echo "Classes generated\n";
             }
             break;
 
