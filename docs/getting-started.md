@@ -88,15 +88,39 @@ modxapp create mypackage --interactive
 
 ### Через флаги
 
+Все доступные флаги:
+
 ```bash
 modxapp create mypackage \
-    --elements \
     --author="Ivan Petrov" \
     --email=ivan@example.com \
     --gitlogin=ivanpetrov \
     --short-name=my \
-    --php-version=8.1
+    --php-version=8.1 \
+    --repository=https://github.com/ivanpetrov/mypackage \
+    --template=./my-templates \
+    --tools-config=./my-tool-configs \
+    --elements \
+    --php-cs-fixer \
+    --eslint
 ```
+
+| Флаг | Описание |
+|------|----------|
+| `--author=` | Имя автора |
+| `--email=` | Email автора |
+| `--gitlogin=` | Git username (GitHub/GitLab) |
+| `--short-name=` | Краткое имя для лексиконов и настроек |
+| `--php-version=` | Минимальная версия PHP (по умолчанию `8.1`) |
+| `--repository=` | URL репозитория |
+| `--template=` | Путь к [кастомным шаблонам](commands/templates.md) |
+| `--tools-config=` | Путь к [кастомным конфигам инструментов](tools.md#свои-конфиги-инструментов) |
+| `--elements` | Генерировать файлы элементов |
+| `--php-cs-fixer` | Добавить PHP CS Fixer (PSR-12) |
+| `--eslint` | Добавить ESLint для JS |
+| `--interactive` | Интерактивный режим |
+
+Все флаги необязательны — значения берутся из `modxapp.json` (или глобального конфига).
 
 ## Следующие шаги
 
