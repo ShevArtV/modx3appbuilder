@@ -6,7 +6,10 @@
  */
 
 // Load composer autoload
-require_once $namespace['path'] . 'vendor/autoload.php';
+$autoload = $namespace['path'] . 'vendor/autoload.php';
+if (file_exists($autoload)) {
+    require_once $autoload;
+}
 
 // Load the classes if model directory exists
 if (is_dir($namespace['path'] . 'src/Model')) {
