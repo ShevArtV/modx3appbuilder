@@ -223,13 +223,20 @@ class ComponentBuilder
 
         require_once MODX_CORE_PATH . 'config/config.inc.php';
 
+        $modxVendorAutoload = MODX_CORE_PATH . 'vendor/autoload.php';
+        if (file_exists($modxVendorAutoload)) {
+            require_once $modxVendorAutoload;
+        }
+
         $modxClass = MODX_CORE_PATH . 'src/Revolution/modX.php';
         $modxClassLegacy = MODX_CORE_PATH . 'model/modx/modx.class.php';
 
-        if (file_exists($modxClass)) {
-            require_once $modxClass;
-        } elseif (file_exists($modxClassLegacy)) {
-            require_once $modxClassLegacy;
+        if (!class_exists('MODX\Revolution\modX')) {
+            if (file_exists($modxClass)) {
+                require_once $modxClass;
+            } elseif (file_exists($modxClassLegacy)) {
+                require_once $modxClassLegacy;
+            }
         }
 
         $this->modx = new modX();
