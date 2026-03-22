@@ -70,6 +70,7 @@ class CLI
         echo "Package Builder for MODX Revolution 3\n\n";
         echo "Usage: mxbuilder <command> [package_name] [options]\n\n";
         echo "Commands:\n";
+        echo "  setup                   Download MODX core and configure for local builds\n";
         echo "  config                  Configure global settings\n";
         echo "  init                    Initialize project (create mxbuilder.json)\n";
         echo "  create <name>           Create new package from template\n";

@@ -197,15 +197,40 @@ class ComponentBuilder
     private function initializeModx(): void
     {
         if (!defined('MODX_CORE_PATH')) {
-            $path = dirname(__DIR__, 2);
-            while (!file_exists($path . '/core/config/config.inc.php') && (strlen($path) > 1)) {
-                $path = dirname($path);
+            $searchPaths = [
+                getcwd(),
+                dirname(__DIR__, 2),
+                dirname(__DIR__),
+            ];
+
+            $found = false;
+            foreach ($searchPaths as $path) {
+                if (file_exists($path . '/core/config/config.inc.php')) {
+                    define('MODX_CORE_PATH', $path . '/core/');
+                    $found = true;
+                    break;
+                }
             }
-            define('MODX_CORE_PATH', $path . '/core/');
+
+            if (!$found) {
+                $path = getcwd();
+                while (!file_exists($path . '/core/config/config.inc.php') && strlen($path) > 1) {
+                    $path = dirname($path);
+                }
+                define('MODX_CORE_PATH', $path . '/core/');
+            }
         }
 
         require_once MODX_CORE_PATH . 'config/config.inc.php';
-        require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
+
+        $modxClass = MODX_CORE_PATH . 'src/Revolution/modX.php';
+        $modxClassLegacy = MODX_CORE_PATH . 'model/modx/modx.class.php';
+
+        if (file_exists($modxClass)) {
+            require_once $modxClass;
+        } elseif (file_exists($modxClassLegacy)) {
+            require_once $modxClassLegacy;
+        }
 
         $this->modx = new modX();
         $this->modx->initialize('mgr');

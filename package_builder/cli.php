@@ -29,6 +29,7 @@ use ComponentBuilder\SchemaManager;
 use ComponentBuilder\LexiconExtractor;
 use ComponentBuilder\SettingsExtractor;
 use ComponentBuilder\ElementManager;
+use ComponentBuilder\SetupManager;
 
 $cli = new CLI($argv);
 
@@ -315,6 +316,25 @@ try {
 
             $cli->saveLocalConfig($localConfig);
             echo "\nSUCCESS: mxbuilder.json created\n";
+            break;
+
+        case 'setup':
+            $setupManager = new SetupManager();
+
+            if ($setupManager->isSetupComplete()) {
+                echo "MODX core is already configured.\n";
+                if (!$cli->promptYesNo('Reconfigure?', false)) {
+                    echo "Aborted.\n";
+                    break;
+                }
+            }
+
+            if ($setupManager->setup()) {
+                echo "\nSUCCESS: MODX core configured for local package building\n";
+                echo "You can now use 'mxbuilder build' without a full MODX installation.\n";
+            } else {
+                $cli->showError('Setup failed');
+            }
             break;
 
         case 'templates':

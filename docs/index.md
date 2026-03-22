@@ -69,7 +69,19 @@ composer require shevartv/modx-builder --dev
 
 В этом случае команда вызывается как `vendor/bin/mxbuilder`. Далее во всех примерах используется `mxbuilder` (глобальная установка).
 
-### 2. Глобальные настройки (один раз)
+### 2. Настройка окружения (если нет MODX)
+
+Если у вас нет установленного MODX 3 — setup скачает ядро и настроит окружение с SQLite:
+
+```bash
+mxbuilder setup
+```
+
+Если MODX уже установлен — этот шаг не нужен, сборщик найдёт `core/config/config.inc.php` автоматически.
+
+Подробнее: [Команда setup](commands/setup.md)
+
+### 3. Глобальные настройки (один раз)
 
 Настройте данные автора и параметры по умолчанию — они будут использоваться во всех проектах:
 
@@ -79,7 +91,7 @@ mxbuilder config
 
 Подробнее: [Команда config](commands/config.md)
 
-### 3. Инициализация проекта (опционально)
+### 4. Инициализация проекта (опционально)
 
 Создайте локальный конфиг `mxbuilder.json` для текущего проекта:
 
@@ -94,7 +106,7 @@ mxbuilder init
 
 Подробнее: [Команда init](commands/init.md)
 
-### 4. Шаблоны (опционально)
+### 5. Шаблоны (опционально)
 
 Package Builder создаёт пакеты из встроенных шаблонов. Если вы хотите использовать свои — скопируйте оригинальные в нужную папку и отредактируйте:
 
@@ -113,7 +125,7 @@ mxbuilder create shop --template=./templates/ecommerce
 
 Подробнее: [Управление шаблонами](commands/templates.md)
 
-### 5. Конфигурация пакета
+### 6. Конфигурация пакета
 
 Каждый пакет имеет файл конфигурации, который создаётся автоматически при `create`:
 
@@ -125,7 +137,7 @@ package_builder/packages/<name>/config.php
 
 Подробнее: [Конфигурация](configuration.md)
 
-### 6. Создание структуры пакета
+### 7. Создание структуры пакета
 
 ```bash
 mxbuilder create mypackage --interactive
@@ -158,7 +170,7 @@ core/components/mypackage/
 
 Подробнее: [Команда create](commands/create.md)
 
-### 7. Схема базы данных (опционально)
+### 8. Схема базы данных (опционально)
 
 Если ваш компонент использует свои таблицы в БД, опишите их в XML-схеме и сгенерируйте PHP-классы:
 
@@ -170,7 +182,7 @@ mxbuilder schema mypackage
 
 Подробнее: [Команда schema](commands/schema.md)
 
-### 8. Работа с элементами
+### 9. Работа с элементами
 
 Опишите элементы компонента в PHP-файлах (`packages/mypackage/elements/`) и добавьте их в MODX одной командой — без входа в админку:
 
@@ -182,7 +194,7 @@ mxbuilder elements mypackage
 
 Подробнее: [Команда elements](commands/elements.md)
 
-### 9. Извлечение данных из кода
+### 10. Извлечение данных из кода
 
 Package Builder умеет автоматически находить лексиконы и настройки в вашем PHP-коде:
 
@@ -197,7 +209,7 @@ mxbuilder extract-settings mypackage
 
 Подробнее: [extract-lexicons](commands/extract-lexicons.md) | [extract-settings](commands/extract-settings.md)
 
-### 10. Сборка пакета
+### 11. Сборка пакета
 
 ```bash
 mxbuilder build mypackage

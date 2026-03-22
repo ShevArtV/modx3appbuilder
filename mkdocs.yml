@@ -39,6 +39,7 @@ nav:
   - Главная: index.md
   - Установка: getting-started.md
   - Команды:
+    - setup: commands/setup.md
     - config: commands/config.md
     - init: commands/init.md
     - create: commands/create.md
