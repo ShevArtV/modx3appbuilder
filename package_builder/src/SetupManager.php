@@ -132,9 +132,23 @@ class SetupManager
         }
 
         $this->recursiveCopy($sourceCore, $targetCore);
+
+        $rootDir = $dirs[0];
+        foreach (['composer.json', 'composer.lock'] as $file) {
+            if (file_exists($rootDir . '/' . $file)) {
+                copy($rootDir . '/' . $file, $targetCore . '/' . $file);
+            }
+        }
+
         $this->removeDir($tmpDir);
 
         echo "Core extracted to {$targetCore}\n";
+
+        if (file_exists($targetCore . '/composer.json')) {
+            echo "Installing MODX dependencies...\n";
+            $this->composerInstall($targetCore);
+        }
+
         return true;
     }
 
@@ -254,6 +268,57 @@ PHP;
         ");
 
         echo "SQLite database initialized: {$dbPath}\n";
+    }
+
+    private function composerInstall(string $dir): void
+    {
+        $composerBin = $this->findComposer();
+
+        if (!$composerBin) {
+            echo "  WARNING: Composer not found. Run 'composer install' manually in {$dir}\n";
+            return;
+        }
+
+        $cmd = escapeshellarg($composerBin) . ' install --no-dev --no-interaction --working-dir=' . escapeshellarg($dir) . ' 2>&1';
+        $output = [];
+        $exitCode = 0;
+        exec($cmd, $output, $exitCode);
+
+        if ($exitCode !== 0) {
+            $phpBin = PHP_BINARY;
+            $cmd = escapeshellarg($phpBin) . ' ' . escapeshellarg($composerBin) . ' install --no-dev --no-interaction --working-dir=' . escapeshellarg($dir) . ' 2>&1';
+            exec($cmd, $output, $exitCode);
+        }
+
+        if ($exitCode === 0) {
+            echo "  Dependencies installed\n";
+        } else {
+            echo "  WARNING: composer install failed. Run manually in {$dir}\n";
+            echo "  " . implode("\n  ", array_slice($output, -3)) . "\n";
+        }
+    }
+
+    private function findComposer(): ?string
+    {
+        $paths = [
+            'composer',
+            'composer.phar',
+            getenv('HOME') . '/bin/composer',
+            '/usr/local/bin/composer',
+            '/usr/bin/composer',
+        ];
+
+        foreach ($paths as $path) {
+            $which = trim(shell_exec("which {$path} 2>/dev/null") ?? '');
+            if (!empty($which)) {
+                return $which;
+            }
+            if (file_exists($path)) {
+                return $path;
+            }
+        }
+
+        return null;
     }
 
     private function recursiveCopy(string $source, string $destination): void
