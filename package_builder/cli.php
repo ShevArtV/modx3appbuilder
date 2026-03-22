@@ -224,7 +224,7 @@ try {
             $modx = $builder->getModx();
 
             $root = dirname(MODX_CORE_PATH) . '/';
-            $elementsPath = dirname(__DIR__) . '/package_builder/packages/' . $packageName . '/elements/';
+            $elementsPath = getcwd() . '/package_builder/packages/' . $packageName . '/elements/';
 
             if (!is_dir($elementsPath)) {
                 $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
@@ -251,7 +251,7 @@ try {
                 $cli->showError("Package config not found: {$packageName}");
             }
 
-            $root = dirname(__DIR__) . '/';
+            $root = getcwd() . '/';
             $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
             $directory = $corePath . 'src/';
             $outputPath = $corePath . 'lexicon/en/default.inc.php';
@@ -274,7 +274,7 @@ try {
                 $cli->showError("Package config not found: {$packageName}");
             }
 
-            $root = dirname(__DIR__) . '/';
+            $root = getcwd() . '/';
             $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
             $directory = $corePath . 'src/';
             $outputPath = $corePath . 'elements/settings.php';
@@ -302,7 +302,7 @@ try {
 
             $root = dirname(MODX_CORE_PATH) . '/';
             $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
-            $elementsPath = dirname(__DIR__) . '/package_builder/packages/' . $packageName . '/elements';
+            $elementsPath = getcwd() . '/package_builder/packages/' . $packageName . '/elements';
 
             $exportManager = new ExportManager($modx, $packageConfig);
 
