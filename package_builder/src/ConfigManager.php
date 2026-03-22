@@ -19,6 +19,7 @@ class ConfigManager
         return [
             'packages_path' => $cwd . 'package_builder/packages/',
             'core_path' => $cwd . 'core/components/',
+            'assets_path' => $cwd . 'assets/components/',
             'templates_path' => dirname(__DIR__) . '/templates/',
         ];
     }
@@ -38,12 +39,18 @@ class ConfigManager
 
     public function getTemplatesPath(): string
     {
-        return $this->defaultConfig['templates_path'];
+        return $this->defaultConfig['templates_path'] . 'default/';
     }
 
     public function copyTemplates(string $destination): bool
     {
-        $source = rtrim($this->defaultConfig['templates_path'], '/');
+        $isLocalName = !str_contains($destination, '/') && !str_contains($destination, '\\');
+
+        if ($isLocalName) {
+            $destination = getcwd() . '/package_builder/templates/' . $destination;
+        }
+
+        $source = rtrim($this->defaultConfig['templates_path'] . 'default', '/');
         $destination = rtrim($destination, '/');
 
         if (!is_dir($source)) {
@@ -76,14 +83,37 @@ class ConfigManager
         return true;
     }
 
+    public function resolveTemplatePath(string $template = ''): string
+    {
+        if (empty($template)) {
+            return $this->defaultConfig['templates_path'] . 'default/';
+        }
+
+        $localPath = getcwd() . '/package_builder/templates/' . $template . '/';
+        if (is_dir($localPath)) {
+            return $localPath;
+        }
+
+        $builtinPath = $this->defaultConfig['templates_path'] . $template . '/';
+        if (is_dir($builtinPath)) {
+            return $builtinPath;
+        }
+
+        if (is_dir($template)) {
+            return rtrim($template, '/') . '/';
+        }
+
+        return $this->defaultConfig['templates_path'] . 'default/';
+    }
+
     public function createPackageTemplate(string $packageName, array $options = []): bool
     {
         try {
-            // Создаем структуру директорий
-            $this->createPackageStructure($packageName, $options);
+            $templatePath = $this->resolveTemplatePath($options['template'] ?? '');
 
-            // Создаем конфигурационный файл пакета
-            $this->createPackageConfig($packageName, $options);
+            $this->createPackageStructure($packageName, $options, $templatePath);
+            $this->createPackageConfig($packageName, $options, $templatePath);
+            $this->createAssetsStructure($packageName, $options, $templatePath);
 
             return true;
         } catch (Exception $e) {
@@ -92,10 +122,9 @@ class ConfigManager
         }
     }   
     
-    private function createPackageStructure(string $packageName, array $options = []): void
+    private function createPackageStructure(string $packageName, array $options, string $templatePath): void
     {
-        $basePath = !empty($options['template']) ? rtrim($options['template'], '/') . '/' : $this->defaultConfig['templates_path'];
-        $templatePath = $basePath . 'components';
+        $sourcePath = $templatePath . 'core/components';
         $targetPath = $this->defaultConfig['core_path'] . $packageName;
         
         // Создаем целевую директорию
@@ -104,7 +133,7 @@ class ConfigManager
         }
         
         // Рекурсивно копируем все файлы и папки
-        $this->recursiveCopyWithProcessing($templatePath, $targetPath, $packageName, $options);
+        $this->recursiveCopyWithProcessing($sourcePath, $targetPath, $packageName, $options);
         
         // Если не нужно генерировать элементы, удаляем папку
         if (!($options['generateElements'] ?? false)) {
@@ -161,10 +190,25 @@ class ConfigManager
         }
     }
     
-    private function createPackageConfig(string $packageName, array $options = []): void
+    private function createAssetsStructure(string $packageName, array $options, string $templatePath): void
     {
-        $basePath = !empty($options['template']) ? rtrim($options['template'], '/') . '/' : $this->defaultConfig['templates_path'];
-        $packagesTemplatePath = $basePath . 'packages';
+        $sourcePath = $templatePath . 'assets/components';
+        $targetPath = $this->defaultConfig['assets_path'] . $packageName;
+
+        if (!is_dir($sourcePath)) {
+            return;
+        }
+
+        if (!is_dir($targetPath)) {
+            mkdir($targetPath, 0755, true);
+        }
+
+        $this->recursiveCopyWithProcessing($sourcePath, $targetPath, $packageName, $options);
+    }
+
+    private function createPackageConfig(string $packageName, array $options, string $templatePath): void
+    {
+        $packagesTemplatePath = $templatePath . 'package_builder/packages';
         $packageConfigPath = $this->defaultConfig['packages_path'] . $packageName;
         
         // Создаем директорию для конфига пакета

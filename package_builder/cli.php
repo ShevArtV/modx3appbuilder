@@ -450,10 +450,28 @@ try {
                 } else {
                     $cli->showError("Failed to copy templates to {$destination}");
                 }
+            } elseif ($subCommand === 'list') {
+                $localDir = getcwd() . '/package_builder/templates/';
+                $builtinDir = $configManager->getTemplatesPath() . '../';
+
+                echo "Built-in templates:\n";
+                if (is_dir($builtinDir)) {
+                    foreach (glob($builtinDir . '*', GLOB_ONLYDIR) as $dir) {
+                        echo "  " . basename($dir) . "\n";
+                    }
+                }
+
+                if (is_dir($localDir)) {
+                    echo "\nProject templates:\n";
+                    foreach (glob($localDir . '*', GLOB_ONLYDIR) as $dir) {
+                        echo "  " . basename($dir) . "\n";
+                    }
+                }
             } else {
                 echo "Usage:\n";
                 echo "  modxapp templates path              Show default templates path\n";
-                echo "  modxapp templates copy <path>       Copy default templates to <path>\n";
+                echo "  modxapp templates list              List available templates\n";
+                echo "  modxapp templates copy <name>       Copy default template (name or path)\n";
             }
             break;
 
