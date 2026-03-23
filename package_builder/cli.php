@@ -454,14 +454,17 @@ try {
             break;
 
         case 'setup':
-            $setupManager = new SetupManager();
+            $isGlobal = !str_starts_with(
+                realpath(__DIR__) ?: __DIR__,
+                realpath(getcwd()) ?: getcwd()
+            );
+            $basePath = $isGlobal ? dirname(__DIR__) : getcwd();
 
-            if ($setupManager->isSetupComplete()) {
-                echo "MODX core is already configured.\n";
-                if (!$cli->promptYesNo('Reconfigure?', false)) {
-                    echo "Aborted.\n";
-                    break;
-                }
+            $setupManager = new SetupManager($basePath);
+
+            if ($setupManager->hasCore()) {
+                echo "MODX core already exists at {$basePath}/core/\n";
+                break;
             }
 
             if ($setupManager->setup()) {
