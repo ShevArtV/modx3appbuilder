@@ -202,7 +202,7 @@ try {
             $builder = new ComponentBuilder($packageConfig);
             $modx = $builder->getModx();
 
-            $root = dirname(MODX_CORE_PATH) . '/';
+            $root = $builder->isHeadless() ? getcwd() . '/' : dirname(MODX_CORE_PATH) . '/';
             $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
             $schemaFile = $corePath . ($packageConfig['schema']['file'] ?? 'schema/' . $packageName . '.mysql.schema.xml');
 
@@ -290,7 +290,7 @@ try {
             $builder = new ComponentBuilder($packageConfig);
             $modx = $builder->getModx();
 
-            $root = dirname(MODX_CORE_PATH) . '/';
+            $root = $builder->isHeadless() ? getcwd() . '/' : dirname(MODX_CORE_PATH) . '/';
             $elementsPath = getcwd() . '/package_builder/packages/' . $packageName . '/elements/';
 
             if (!is_dir($elementsPath)) {
@@ -367,7 +367,7 @@ try {
             $builder = new ComponentBuilder($packageConfig);
             $modx = $builder->getModx();
 
-            $root = dirname(MODX_CORE_PATH) . '/';
+            $root = $builder->isHeadless() ? getcwd() . '/' : dirname(MODX_CORE_PATH) . '/';
             $corePath = $root . ($packageConfig['paths']['core'] ?? 'core/components/' . $packageName . '/');
             $elementsPath = getcwd() . '/package_builder/packages/' . $packageName . '/elements';
 

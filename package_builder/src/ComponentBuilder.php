@@ -341,10 +341,15 @@ class ComponentBuilder
     private function initializeModx(): void
     {
         if (!defined('MODX_CORE_PATH')) {
+            $composerHome = getenv('COMPOSER_HOME')
+                ?: (($_SERVER['HOME'] ?? getenv('HOME') ?? '') . '/.config/composer');
+            $globalPackagePath = $composerHome . '/vendor/shevartv/modx-builder';
+
             $searchPaths = [
                 getcwd(),
                 dirname(__DIR__, 2),
                 dirname(__DIR__),
+                $globalPackagePath,
             ];
 
             $found = false;
@@ -403,7 +408,7 @@ class ComponentBuilder
     private function resolveConfig(string $packageName): ?array
     {
         $config = $this->config;
-        $root = dirname(MODX_CORE_PATH) . '/';
+        $root = $this->headless ? getcwd() . '/' : dirname(MODX_CORE_PATH) . '/';
 
         $config['abs_core'] = $root . ($config['paths']['core'] ?? 'core/components/' . $packageName . '/');
         $config['abs_assets'] = $root . ($config['paths']['assets'] ?? 'assets/components/' . $packageName . '/');
@@ -467,7 +472,7 @@ class ComponentBuilder
         $resolversPath = getcwd() . '/package_builder/packages/' . $packageConfig['name_lower'] . '/resolvers/';
 
         if (!empty($packageConfig['resolvers_path'])) {
-            $root = dirname(MODX_CORE_PATH) . '/';
+            $root = $this->headless ? getcwd() . '/' : dirname(MODX_CORE_PATH) . '/';
             $resolversPath = $root . $packageConfig['resolvers_path'];
         }
 
@@ -598,7 +603,7 @@ class ComponentBuilder
         ];
 
         if (!empty($packageConfig['resolvers_path'])) {
-            $root = dirname(MODX_CORE_PATH) . '/';
+            $root = $this->headless ? getcwd() . '/' : dirname(MODX_CORE_PATH) . '/';
             array_unshift($paths, $root . $packageConfig['resolvers_path'] . 'resolve.encryption.php');
         }
 
