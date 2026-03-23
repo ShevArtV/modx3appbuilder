@@ -1,0 +1,1294 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="CLI for rapid MODX Revolution 3 package development">
+      
+      
+      
+        <link rel="canonical" href="https://shevartv.github.io/modx3/workflows/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../commands/setup/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Сценарии работы - Package Builder</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="Package Builder" class="md-header__button md-logo" aria-label="Package Builder" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Package Builder
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Сценарии работы
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Package Builder" class="md-nav__button md-logo" aria-label="Package Builder" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Package Builder
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Быстрый старт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Установка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сценарии работы
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сценарии работы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-headless" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Headless — файловая разработка и сборка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Файловая разработка + стандартная сборка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Файловая разработка + элементы в БД
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Смешанная разработка — файлы + админка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сравнение сценариев
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Команды
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Команды
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    init
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/create/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    create
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    build
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/schema-extract/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    schema-extract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/export/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    export
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/extract-lexicons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    extract-lexicons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/extract-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    extract-settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    templates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конфигурация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инструменты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encryption/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Шифрование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../packignore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    .packignore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-headless" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Headless — файловая разработка и сборка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Файловая разработка + стандартная сборка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Файловая разработка + элементы в БД
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Смешанная разработка — файлы + админка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сравнение сценариев
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">Сценарии работы<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Package Builder поддерживает несколько сценариев разработки. Выбор зависит от того, есть ли у вас локальный MODX и как вы предпочитаете работать с элементами.</p>
+<h2 id="1-headless">1. Headless — файловая разработка и сборка<a class="headerlink" href="#1-headless" title="Permanent link">&para;</a></h2>
+<p><strong>Когда подходит:</strong> вы хотите разрабатывать пакет без установки MODX и MySQL. Весь код и элементы описываются в файлах, сборка происходит локально, а установка — на отдельном тестовом сайте.</p>
+<p><strong>Преимущества:</strong></p>
+<ul>
+<li>Не нужен сервер, MySQL, установленный MODX</li>
+<li>Пакет можно спокойно устанавливать и удалять на тестовом MODX — все элементы создаются из transport-пакета и чисто удаляются при деинсталляции, ничего не затирается</li>
+<li>Весь пакет под контролем git</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>modxapp<span class="w"> </span>setup<span class="w">                          </span><span class="c1"># скачать ядро MODX (один раз)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>modxapp<span class="w"> </span>create<span class="w"> </span>my-package<span class="w">              </span><span class="c1"># создать структуру</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Написать код, описать элементы в файлах</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>modxapp<span class="w"> </span>extract-lexicons<span class="w"> </span>my-package<span class="w">    </span><span class="c1"># извлечь ключи лексиконов</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>modxapp<span class="w"> </span>extract-settings<span class="w"> </span>my-package<span class="w">    </span><span class="c1"># извлечь настройки</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>modxapp<span class="w"> </span>build<span class="w"> </span>my-package<span class="w">               </span><span class="c1"># собрать transport.zip</span>
+</code></pre></div>
+<p>Полученный <code>transport.zip</code> загружается на MODX-сайт через менеджер пакетов или вручную в <code>core/packages/</code>.</p>
+<p><strong>Доступные команды:</strong> <code>setup</code>, <code>create</code>, <code>build</code>, <code>schema</code> (генерация классов), <code>extract-lexicons</code>, <code>extract-settings</code>, <code>templates</code>, <code>config</code>, <code>init</code></p>
+<p><strong>Недоступные команды:</strong> <code>elements</code>, <code>export</code>, <code>schema-extract</code> — требуют подключение к БД MODX</p>
+<div class="admonition tip">
+<p class="admonition-title">Безопасное тестирование</p>
+<p>Headless-сборка идеальна для первых итераций пакета. Вы можете многократно устанавливать и удалять пакет на тестовом MODX, не опасаясь конфликтов — все элементы создаются из transport-пакета и чисто удаляются при деинсталляции.</p>
+</div>
+<hr />
+<h2 id="2">2. Файловая разработка + стандартная сборка<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p><strong>Когда подходит:</strong> у вас есть установленный MODX, но вы предпочитаете описывать все элементы в файлах, не используя админку.</p>
+<p><strong>Отличие от headless:</strong> сборка идёт через стандартный <code>modPackageBuilder</code> MODX, что гарантирует 100% совместимость transport-формата. Однако на практике standalone-сборщик генерирует идентичный результат, поэтому этот сценарий допустим, но не даёт преимуществ перед headless.</p>
+<p><strong>Workflow:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>modxapp<span class="w"> </span>create<span class="w"> </span>my-package
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Описать элементы в файлах</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>modxapp<span class="w"> </span>build<span class="w"> </span>my-package<span class="w">               </span><span class="c1"># сборка через modPackageBuilder</span>
+</code></pre></div>
+<p>Как и в headless, при установке и удалении пакета на тестовом MODX ничего не затирается — элементы создаются из transport-пакета.</p>
+<hr />
+<h2 id="3">3. Файловая разработка + элементы в БД<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p><strong>Когда подходит:</strong> вы хотите видеть и тестировать элементы (сниппеты, чанки, плагины) в MODX во время разработки, а не только после сборки и установки пакета.</p>
+<p><strong>Преимущества:</strong></p>
+<ul>
+<li>Можно тестировать элементы прямо на сайте, не пересобирая пакет</li>
+<li>Видны ошибки сразу — плагин не сработал, сниппет вернул не то</li>
+<li>Финальная сборка гарантированно включает проверенный код</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>modxapp<span class="w"> </span>create<span class="w"> </span>my-package<span class="w"> </span>--elements
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Описать элементы в файлах</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>modxapp<span class="w"> </span>elements<span class="w"> </span>my-package<span class="w">            </span><span class="c1"># добавить элементы в MODX</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Тестировать на сайте — сниппеты, плагины работают</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Исправить код, повторить elements</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>modxapp<span class="w"> </span>build<span class="w"> </span>my-package<span class="w">               </span><span class="c1"># собрать финальную версию</span>
+</code></pre></div>
+<p>Команда <code>elements</code> создаёт или обновляет элементы в БД MODX из ваших PHP-файлов. Это быстрее, чем каждый раз пересобирать и переустанавливать пакет. При этом <code>build</code> берёт элементы из файлов, а не из БД — вы всегда контролируете что попадёт в transport-пакет.</p>
+<div class="admonition warning">
+<p class="admonition-title">Не используйте build --install в этом сценарии</p>
+<p>Команда <code>elements</code> создаёт элементы напрямую в БД. Если после этого выполнить <code>build --install</code>, transport-пакет установится поверх — и при последующем удалении пакета удалятся все элементы, включая те, которые вы создавали через <code>elements</code>. Тестируйте установку пакета на <strong>отдельном</strong> сайте, а не на том, где ведёте разработку.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">elements vs build --install</p>
+<p><code>elements</code> добавляет элементы в БД для разработки. <code>build --install</code> собирает пакет и устанавливает его как transport — это разные процессы. При разработке используйте <code>elements</code> для быстрой итерации, а установку тестируйте отдельно.</p>
+</div>
+<hr />
+<h2 id="4">4. Смешанная разработка — файлы + админка<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p><strong>Когда подходит:</strong> часть элементов удобнее создавать через админку MODX, а код писать в файлах.</p>
+<p><strong>Элементы, которые удобнее создавать в админке:</strong></p>
+<ul>
+<li>Системные настройки — визуальный интерфейс с выбором типа (textfield, combo-boolean и т.д.)</li>
+<li>TV-параметры — настройка привязки к шаблонам</li>
+<li>Меню — проверка порядка и вложенности</li>
+<li>Шаблоны — визуальное редактирование</li>
+<li>Системные события — регистрация кастомных событий</li>
+<li>Таблицы в БД — создание через SQL или phpMyAdmin, затем <a href="../commands/schema-extract/">извлечение схемы</a> командой <code>schema-extract</code></li>
+</ul>
+<p><strong>Элементы, которые лучше хранить в файлах:</strong></p>
+<ul>
+<li>Чанки — HTML-код удобнее редактировать в IDE с подсветкой и автодополнением</li>
+<li>Сниппеты — PHP-код с типизацией, автодополнением, git-историей</li>
+<li>Плагины — аналогично сниппетам</li>
+</ul>
+<p><strong>Workflow:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>modxapp<span class="w"> </span>create<span class="w"> </span>my-package<span class="w"> </span>--elements
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Описать сниппеты, плагины, чанки в файлах</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>modxapp<span class="w"> </span>elements<span class="w"> </span>my-package<span class="w">            </span><span class="c1"># добавить файловые элементы в MODX</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Создать настройки, TV, меню, шаблоны через админку MODX</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Создать таблицы через SQL</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>modxapp<span class="w"> </span>schema-extract<span class="w"> </span>my-package<span class="w">      </span><span class="c1"># извлечь XML-схему из таблиц</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>modxapp<span class="w"> </span><span class="nb">export</span><span class="w"> </span>my-package<span class="w">              </span><span class="c1"># извлечь ВСЕ элементы из БД в файлы</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>modxapp<span class="w"> </span>build<span class="w"> </span>my-package<span class="w">               </span><span class="c1"># собрать пакет</span>
+</code></pre></div>
+<p>Команда <code>export</code> извлекает <strong>все</strong> элементы категории из БД и записывает в файлы — как созданные через <code>elements</code>, так и добавленные вручную через админку. Контент элементов (код сниппетов, HTML чанков) сохраняется в отдельные файлы.</p>
+<div class="admonition warning">
+<p class="admonition-title">export перезаписывает файлы</p>
+<p><code>export</code> перезаписывает существующие файлы элементов. Если вы вручную редактировали <code>elements/snippets.php</code> и одновременно меняли элементы в админке — <code>export</code> затрёт ваши файловые правки данными из БД. Сначала убедитесь, что актуальная версия — в БД.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Не используйте build --install на рабочем сайте</p>
+<p>Как и в сценарии 3, не устанавливайте пакет на тот же сайт, где создавали элементы через админку. При удалении пакета MODX удалит все элементы, включая созданные вручную. Тестируйте установку на отдельном сайте.</p>
+</div>
+<hr />
+<h2 id="_2">Сравнение сценариев<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: center;">Headless</th>
+<th style="text-align: center;">Файловая + стандартная</th>
+<th style="text-align: center;">Файловая + элементы</th>
+<th style="text-align: center;">Смешанная</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Нужен MODX</td>
+<td style="text-align: center;">нет</td>
+<td style="text-align: center;">да</td>
+<td style="text-align: center;">да</td>
+<td style="text-align: center;">да</td>
+</tr>
+<tr>
+<td>Нужен MySQL</td>
+<td style="text-align: center;">нет</td>
+<td style="text-align: center;">да</td>
+<td style="text-align: center;">да</td>
+<td style="text-align: center;">да</td>
+</tr>
+<tr>
+<td>Тестирование в процессе</td>
+<td style="text-align: center;">нет</td>
+<td style="text-align: center;">нет</td>
+<td style="text-align: center;">да</td>
+<td style="text-align: center;">да</td>
+</tr>
+<tr>
+<td>Работа через админку</td>
+<td style="text-align: center;">нет</td>
+<td style="text-align: center;">нет</td>
+<td style="text-align: center;">нет</td>
+<td style="text-align: center;">да</td>
+</tr>
+<tr>
+<td>Безопасное удаление пакета</td>
+<td style="text-align: center;">да</td>
+<td style="text-align: center;">да</td>
+<td style="text-align: center;">на отдельном сайте</td>
+<td style="text-align: center;">на отдельном сайте</td>
+</tr>
+<tr>
+<td>Контроль через git</td>
+<td style="text-align: center;">полный</td>
+<td style="text-align: center;">полный</td>
+<td style="text-align: center;">полный</td>
+<td style="text-align: center;">после export</td>
+</tr>
+<tr>
+<td>Простота старта</td>
+<td style="text-align: center;">высокая</td>
+<td style="text-align: center;">средняя</td>
+<td style="text-align: center;">средняя</td>
+<td style="text-align: center;">средняя</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">Рекомендации<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Начинающим</strong> — начните с headless. Минимум настройки, понятный workflow, безопасная установка и удаление</li>
+<li><strong>Для быстрой итерации</strong> — сценарий 3 (файлы + elements). Правите код, запускаете <code>elements</code>, проверяете на сайте. Установку тестируйте отдельно</li>
+<li><strong>Для сложных пакетов</strong> — смешанный сценарий. TV-параметры и настройки создавайте в админке, код пишите в файлах, перед сборкой делайте <code>export</code></li>
+<li><strong>Для CI/CD</strong> — headless. Сборка полностью автоматизируется, не зависит от окружения</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
