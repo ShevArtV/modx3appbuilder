@@ -153,13 +153,19 @@ class ElementsManager
 
         $objects = [];
         foreach ($snippets as $name => $data) {
+            $isStatic = !empty($this->config['static']['snippets']);
+            $content = $this->resolveContent($data);
+            if (!$isStatic) {
+                $content = $this->normalizePhpElementContent($content);
+            }
+
             $snippet = $this->modx->newObject(modSnippet::class);
             $snippet->fromArray([
                 'id' => 0,
                 'name' => $name,
                 'description' => $data['description'] ?? '',
-                'snippet' => $this->resolveContent($data),
-                'static' => !empty($this->config['static']['snippets']),
+                'snippet' => $content,
+                'static' => $isStatic,
                 'source' => 1,
                 'static_file' => $this->resolveStaticFile($data),
             ], '', true, true);
@@ -201,13 +207,19 @@ class ElementsManager
 
         $objects = [];
         foreach ($plugins as $name => $data) {
+            $isStatic = !empty($this->config['static']['plugins']);
+            $content = $this->resolveContent($data);
+            if (!$isStatic) {
+                $content = $this->normalizePhpElementContent($content);
+            }
+
             $plugin = $this->modx->newObject(modPlugin::class);
             $plugin->fromArray([
                 'id' => 0,
                 'name' => $name,
                 'description' => $data['description'] ?? '',
-                'plugincode' => $this->resolveContent($data),
-                'static' => !empty($this->config['static']['plugins']),
+                'plugincode' => $content,
+                'static' => $isStatic,
                 'source' => 1,
                 'static_file' => $this->resolveStaticFile($data),
             ], '', true, true);
@@ -485,16 +497,19 @@ class ElementsManager
                 return '';
             }
 
-            $raw = trim($raw);
-
-            if (preg_match('#\<\?php(.*)#is', $raw, $matches)) {
-                return rtrim(rtrim(trim($matches[1] ?? ''), '?>'));
-            }
-
-            return $raw;
+            return trim($raw);
         }
 
         return $content;
+    }
+
+    private function normalizePhpElementContent(string $content): string
+    {
+        $content = ltrim($content, "\xEF\xBB\xBF");
+        $content = preg_replace('/^\s*<\?php\b\s*/i', '', $content) ?? $content;
+        $content = preg_replace('/\s*\?>\s*$/', '', $content) ?? $content;
+
+        return trim($content);
     }
 
     /**

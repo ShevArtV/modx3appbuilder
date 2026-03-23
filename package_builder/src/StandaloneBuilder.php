@@ -395,6 +395,10 @@ class StandaloneBuilder
 
         foreach ($snippets as $name => $data) {
             $content = $this->resolveContent($data, $corePath);
+            $isStatic = (!empty($config['static']['snippets']) && !empty($this->resolveStaticFile($data)));
+            if (!$isStatic) {
+                $content = $this->normalizePhpElementContent($content);
+            }
             $hash = md5($name . $this->signature . 'snippet');
 
             $props = 'a:0:{}';
@@ -419,7 +423,7 @@ class StandaloneBuilder
                     'snippet' => $content,
                     'locked' => 0,
                     'properties' => $props,
-                    'static' => (!empty($config['static']['snippets']) && !empty($this->resolveStaticFile($data))) ? 1 : 0,
+                    'static' => $isStatic ? 1 : 0,
                     'static_file' => $this->resolveStaticFile($data),
                     'content' => $content,
                 ]),
@@ -452,6 +456,10 @@ class StandaloneBuilder
 
         foreach ($plugins as $name => $data) {
             $content = $this->resolveContent($data, $corePath);
+            $isStatic = (!empty($config['static']['plugins']) && !empty($this->resolveStaticFile($data)));
+            if (!$isStatic) {
+                $content = $this->normalizePhpElementContent($content);
+            }
             $hash = md5($name . $this->signature . 'plugin');
 
             $pluginRelated = null;
@@ -507,7 +515,7 @@ class StandaloneBuilder
                     'locked' => 0,
                     'properties' => 'a:0:{}',
                     'disabled' => 0,
-                    'static' => (!empty($config['static']['plugins']) && !empty($this->resolveStaticFile($data))) ? 1 : 0,
+                    'static' => $isStatic ? 1 : 0,
                     'static_file' => $this->resolveStaticFile($data),
                 ]),
                 'guid' => $this->generateGuid(),
@@ -641,6 +649,15 @@ class StandaloneBuilder
             return substr($data['content'], 5);
         }
         return '';
+    }
+
+    private function normalizePhpElementContent(string $content): string
+    {
+        $content = ltrim($content, "\xEF\xBB\xBF");
+        $content = preg_replace('/^\s*<\?php\b\s*/i', '', $content) ?? $content;
+        $content = preg_replace('/\s*\?>\s*$/', '', $content) ?? $content;
+
+        return trim($content);
     }
 
     private function prepareBuildSource(IgnoreFilter $filter, string $sourcePath, string $tmpName): string
