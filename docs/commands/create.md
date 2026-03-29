@@ -52,11 +52,11 @@ core/components/mypackage/
 ├── bootstrap.php              — точка входа, регистрация namespace
 ├── composer.json              — зависимости (PHPStan всегда включён)
 ├── phpstan.neon               — конфигурация PHPStan (level 5)
-├── phpunit.xml                — конфигурация PHPUnit
+├── phpunit.xml                — конфигурация PHPUnit (убирается --no-tests)
 ├── .php-cs-fixer.dist.php     — конфигурация CS Fixer (если включён)
 ├── eslint.config.js           — конфигурация ESLint (если включён)
 ├── package.json               — npm зависимости (если ESLint включён)
-├── tests/
+├── tests/                     — убирается --no-tests
 │   └── ExampleTest.php        — пример unit-теста с моком MODX
 ├── docs/
 │   ├── readme.txt
